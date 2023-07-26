@@ -30,8 +30,16 @@ A project that is going to take regular video footage and provides an output 3D 
     - This feels like it should be fine, because the back of the body is being moved by the front of the body, so there isn't anything unexpected back there.
 
 2) How do I determine the angle from which the user video is being taken?
+    - Maybe I'll need to refer to the angle of the shoulders?
+    - Should this all be relative to the original model?
+        - Probably yes. 
 3) How do I take that model and "move it" to match the angle of the second video?
+    - If I've created the 3D model, I just need to set the "camera angle" from which I need to do a comparison of movements.
 4) Can I compare the values from the "moved model" to the user video?
+    - I've done this before, but very roughly. The problem that I had before was that nothing was standardized, so I wasn't getting the right values.
+5) Is it better to standardize the Coaches model and then move the Users around that model, or is it better to do the opposite?
+    - I'm thinking that the computational power required to create the 3D model is going to be higher than the pose estimation, so creating the 3D model should be done as few times as possible.
+    - So I really just need to figure out which option is cheaper and quicker and then apply that to the Users.
 
 
 
