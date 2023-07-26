@@ -22,6 +22,17 @@ A project that is going to take regular video footage and provides an output 3D 
     - Typically the lines and circles are used, and this is pretty easy with OpenCV.
 
 ## Things I need to figure out
+1)How do I create a 3D model of a persons movement
+    
+- What are the values that I need to pass into this?
+- Can I get those values from a OpenCV pose estimation?
+- Is it ok to only have values that are in reference to the front of someones body?
+    - This feels like it should be fine, because the back of the body is being moved by the front of the body, so there isn't anything unexpected back there.
+
+2) How do I determine the angle from which the user video is being taken?
+3) How do I take that model and "move it" to match the angle of the second video?
+4) Can I compare the values from the "moved model" to the user video?
+
 
 
 
