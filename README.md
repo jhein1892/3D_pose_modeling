@@ -51,4 +51,27 @@ Backend: Leaning towards Python (Jest) for interactions, as well as Python for t
 DB: NoSQL, unless something drastically changes. I think that the flexibility of not needing the same values for every single entry is going to be beneficial. It will also make querying the database much quicker
 
 
+## Resources
+https://medium.com/@alexeyyurasov/3d-modeling-with-python-c21296756db2
+- Guide for turning plot points into a stl file (which can be 3D printed)
 
+https://www.researchgate.net/profile/Gerard-Pons-Moll/publication/335290763_360-Degree_Textures_of_People_in_Clothing_from_a_Single_Image/links/5d89c5a0458515cbd1be39f1/360-Degree-Textures-of-People-in-Clothing-from-a-Single-Image.pdf
+- Research paper for turning a single photo into a 3D model.
+
+https://openaccess.thecvf.com/content/CVPR2022/papers/Weng_HumanNeRF_Free-Viewpoint_Rendering_of_Moving_People_From_Monocular_Video_CVPR_2022_paper.pdf
+- research paper that allows camera angle to be changed in a video (looks very useful)
+
+https://openaccess.thecvf.com/content_CVPR_2020/papers/Zhang_Object-Occluded_Human_Shape_and_Pose_Estimation_From_a_Single_Color_CVPR_2020_paper.pdf
+- Similar to the one above
+
+https://openaccess.thecvf.com/content/ICCV2021/papers/Zheng_3D_Human_Pose_Estimation_With_Spatial_and_Temporal_Transformers_ICCV_2021_paper.pdf
+- A specific transformers technology used in pose estimation
+
+https://openaccess.thecvf.com/content_ICCV_2019/papers/Ci_Optimizing_Network_Structure_for_3D_Human_Pose_Estimation_ICCV_2019_paper.pdf
+
+https://openaccess.thecvf.com/content_ICCV_2019/papers/Cheng_Occlusion-Aware_Networks_for_3D_Human_Pose_Estimation_in_Video_ICCV_2019_paper.pdf
+
+https://openaccess.thecvf.com/content_CVPR_2019/papers/Sun_Deep_High-Resolution_Representation_Learning_for_Human_Pose_Estimation_CVPR_2019_paper.pdf
+
+https://openaccess.thecvf.com/content_CVPR_2019/papers/Pavllo_3D_Human_Pose_Estimation_in_Video_With_Temporal_Convolutions_and_CVPR_2019_paper.pdf
+- Lets start with this one
