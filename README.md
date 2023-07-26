@@ -42,5 +42,13 @@ A project that is going to take regular video footage and provides an output 3D 
     - So I really just need to figure out which option is cheaper and quicker and then apply that to the Users.
 
 
+## Technologies
+
+Front-end: Javascript (React), SASS, HTML
+
+Backend: Leaning towards Python (Jest) for interactions, as well as Python for the OpenCV computing. I might switch this to C++ once it's built just because I'll get better performance, but the ease of using Python for this is going to outweight to performance benefits of C++ right now I think.
+
+DB: NoSQL, unless something drastically changes. I think that the flexibility of not needing the same values for every single entry is going to be beneficial. It will also make querying the database much quicker
+
 
 
