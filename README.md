@@ -71,7 +71,12 @@ https://openaccess.thecvf.com/content_ICCV_2019/papers/Ci_Optimizing_Network_Str
 
 https://openaccess.thecvf.com/content_ICCV_2019/papers/Cheng_Occlusion-Aware_Networks_for_3D_Human_Pose_Estimation_in_Video_ICCV_2019_paper.pdf
 
+
+### Printed:
 https://openaccess.thecvf.com/content_CVPR_2019/papers/Sun_Deep_High-Resolution_Representation_Learning_for_Human_Pose_Estimation_CVPR_2019_paper.pdf
 
+### Read:
 https://openaccess.thecvf.com/content_CVPR_2019/papers/Pavllo_3D_Human_Pose_Estimation_in_Video_With_Temporal_Convolutions_and_CVPR_2019_paper.pdf
-- Lets start with this one
+- This was an interesting article it gave a good model for generating a 3D model for a human pose based on a 2D video.
+- Another interesting bit was that they provided an option for a casual convolution model that could be useful for the live video processing (When a user its comparing itself to a coach).
+- A full on dialated convolution model seemed to provide an accurate 3D model of a users placement in camera space.
