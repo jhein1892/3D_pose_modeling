@@ -42,6 +42,10 @@ A project that is going to take regular video footage and provides an output 3D 
     - So I really just need to figure out which option is cheaper and quicker and then apply that to the Users.
 
 
+## Ideas
+I could use a good 2D tracker for the users, and once I've been able to model move camera for the coach to match the user, then just compare the 2D pose of the coach over the user to determine how close the movements are.
+
+
 ## Technologies
 
 Front-end: Javascript (React), SASS, HTML
@@ -73,10 +77,13 @@ https://openaccess.thecvf.com/content_ICCV_2019/papers/Cheng_Occlusion-Aware_Net
 
 
 ### Printed:
-https://openaccess.thecvf.com/content_CVPR_2019/papers/Sun_Deep_High-Resolution_Representation_Learning_for_Human_Pose_Estimation_CVPR_2019_paper.pdf
 
 ### Read:
 https://openaccess.thecvf.com/content_CVPR_2019/papers/Pavllo_3D_Human_Pose_Estimation_in_Video_With_Temporal_Convolutions_and_CVPR_2019_paper.pdf
 - This was an interesting article it gave a good model for generating a 3D model for a human pose based on a 2D video.
 - Another interesting bit was that they provided an option for a casual convolution model that could be useful for the live video processing (When a user its comparing itself to a coach).
 - A full on dialated convolution model seemed to provide an accurate 3D model of a users placement in camera space.
+
+https://openaccess.thecvf.com/content_CVPR_2019/papers/Sun_Deep_High-Resolution_Representation_Learning_for_Human_Pose_Estimation_CVPR_2019_paper.pdf
+- The model presented here was fucosed on making 2D pose recognition as accurate as possible.
+- Maybe worth looking more into once I figure out the other stuff surrounding POV movement etc.
