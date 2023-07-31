@@ -41,6 +41,9 @@ A project that is going to take regular video footage and provides an output 3D 
     - I'm thinking that the computational power required to create the 3D model is going to be higher than the pose estimation, so creating the 3D model should be done as few times as possible.
     - So I really just need to figure out which option is cheaper and quicker and then apply that to the Users.
 
+## Look into
+1) Perspective-n-point (PnP) pose estimation
+
 
 ## Ideas
 - I could use a good 2D tracker for the users, and once I've been able to model move camera for the coach to match the user, then just compare the 2D pose of the coach over the user to determine how close the movements are.
@@ -49,6 +52,7 @@ A project that is going to take regular video footage and provides an output 3D 
      - If we take my 2D pose estimation keypoints, I just need to figure out
         1) How to determine the users angle from and scale compared to the original video.
         2) The formula for adjusting the pose estmiation model to match the original video, or vice versa. Think of it as trying to capture the same set of stars from different angles. 
+    - If I did it this way, it might actually be easier, and then I wouldn't need to computational resources required to create a 3D model.
 
 
 
