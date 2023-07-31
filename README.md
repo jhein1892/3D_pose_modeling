@@ -43,7 +43,14 @@ A project that is going to take regular video footage and provides an output 3D 
 
 
 ## Ideas
-I could use a good 2D tracker for the users, and once I've been able to model move camera for the coach to match the user, then just compare the 2D pose of the coach over the user to determine how close the movements are.
+- I could use a good 2D tracker for the users, and once I've been able to model move camera for the coach to match the user, then just compare the 2D pose of the coach over the user to determine how close the movements are.
+
+- I think I want to think about this without necessarily moving to a 3D model. 
+     - If we take my 2D pose estimation keypoints, I just need to figure out
+        1) How to determine the users angle from and scale compared to the original video.
+        2) The formula for adjusting the pose estmiation model to match the original video, or vice versa. Think of it as trying to capture the same set of stars from different angles. 
+
+
 
 
 ## Technologies
@@ -62,8 +69,6 @@ https://medium.com/@alexeyyurasov/3d-modeling-with-python-c21296756db2
 https://www.researchgate.net/profile/Gerard-Pons-Moll/publication/335290763_360-Degree_Textures_of_People_in_Clothing_from_a_Single_Image/links/5d89c5a0458515cbd1be39f1/360-Degree-Textures-of-People-in-Clothing-from-a-Single-Image.pdf
 - Research paper for turning a single photo into a 3D model.
 
-https://openaccess.thecvf.com/content/CVPR2022/papers/Weng_HumanNeRF_Free-Viewpoint_Rendering_of_Moving_People_From_Monocular_Video_CVPR_2022_paper.pdf
-- research paper that allows camera angle to be changed in a video (looks very useful)
 
 https://openaccess.thecvf.com/content_CVPR_2020/papers/Zhang_Object-Occluded_Human_Shape_and_Pose_Estimation_From_a_Single_Color_CVPR_2020_paper.pdf
 - Similar to the one above
@@ -78,6 +83,7 @@ https://openaccess.thecvf.com/content_ICCV_2019/papers/Cheng_Occlusion-Aware_Net
 
 ### Printed:
 
+
 ### Read:
 https://openaccess.thecvf.com/content_CVPR_2019/papers/Pavllo_3D_Human_Pose_Estimation_in_Video_With_Temporal_Convolutions_and_CVPR_2019_paper.pdf
 - This was an interesting article it gave a good model for generating a 3D model for a human pose based on a 2D video.
@@ -87,3 +93,7 @@ https://openaccess.thecvf.com/content_CVPR_2019/papers/Pavllo_3D_Human_Pose_Esti
 https://openaccess.thecvf.com/content_CVPR_2019/papers/Sun_Deep_High-Resolution_Representation_Learning_for_Human_Pose_Estimation_CVPR_2019_paper.pdf
 - The model presented here was fucosed on making 2D pose recognition as accurate as possible.
 - Maybe worth looking more into once I figure out the other stuff surrounding POV movement etc.
+
+https://openaccess.thecvf.com/content/CVPR2022/papers/Weng_HumanNeRF_Free-Viewpoint_Rendering_of_Moving_People_From_Monocular_Video_CVPR_2022_paper.pdf
+- Focusing on reconstructing an image or a frame from a video from another angle. 
+- Really heavy with the math, and no github repo to reference.
