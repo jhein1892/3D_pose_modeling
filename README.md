@@ -55,6 +55,18 @@ A project that is going to take regular video footage and provides an output 3D 
     - If I did it this way, it might actually be easier, and then I wouldn't need to computational resources required to create a 3D model.
 
 
+## A way of potentially solving this
+Here's a general outline of how you can confirm that the two photos likely depict the same object:
+
+1) 2D Keypoint Detection: In both images, you need to detect and localize the keypoints or features that are relevant to the object's pose. These keypoints could be corners, edges, or any identifiable points on the object.
+
+2) orrespondence Matching: Once you have detected keypoints in both images, you need to find correspondences between the keypoints in Image A and those in Image B. This step establishes a link between the keypoints in the two images.
+
+3) PnP Pose Estimation: Using the correspondences, you can now apply the PnP algorithm to each image independently. PnP will estimate the 3D pose (position and orientation) of the object relative to the camera for both Image A and Image B.
+
+4) Comparison of Poses: Now that you have the 3D poses estimated for both images, you can compare the two poses to determine if they are similar or not. The comparison can be based on various metrics, such as the relative position and orientation of the object.
+
+
 
 
 ## Technologies
