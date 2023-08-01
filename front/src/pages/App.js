@@ -1,5 +1,6 @@
 import '../styles/App.sass';
-
+import Header from '../components/header';
+import MainPage from '../components/main';
 /*
  * This is gonig to be a single page app to start with, and will essentially be just an  
  * MVP to see if this idea works.
@@ -14,7 +15,8 @@ import '../styles/App.sass';
 function App() {
   return (
     <div className="App">
-      <h1>My New Project!</h1> 
+      <Header/>
+      <MainPage/>
     </div>
   );
 }
