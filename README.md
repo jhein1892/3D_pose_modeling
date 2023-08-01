@@ -8,6 +8,18 @@ A project that is going to take regular video footage and provides an output 3D 
 2) User
     - These are users that are going to be accessing the content uploaded by the coaches
 
+
+## Steps to take
+1) Set up a Front-End repo, and set up a Backend Repo
+    - Main thing is need to be able to upload videos to front, and work with them on back.
+2) Set up a Pose Estimation module to gather information
+3) Figure out how I can do Keypoint trajectories over time to capture the characteristic motion patterns
+4) Extract relevant features from the pose and motion data that capture the essence of the movement patterns.
+5) Need to be able to upload a second video from a slightly different angle and distance and store that as a second video
+6) Run the same pose estimation and motion analysis on second video.
+7) Compare the movement patterns between the two videos.
+8) Determine the threshold or similarity score that we want to have for them to be considered similar 
+
 ## Outline for how I see this project working
 1) Take input video from Coachs
     - Simple upload of video
