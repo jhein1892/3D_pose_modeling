@@ -58,13 +58,29 @@ A project that is going to take regular video footage and provides an output 3D 
 ## A way of potentially solving this
 Here's a general outline of how you can confirm that the two photos likely depict the same object:
 
-1) 2D Keypoint Detection: In both images, you need to detect and localize the keypoints or features that are relevant to the object's pose. These keypoints could be corners, edges, or any identifiable points on the object.
+1) 2D Keypoint Detection: Apply keypoint detection to each frame in the video to identify relevant keypoints for the object or person you are interested in. The keypoints should be consistent across frames to ensure accurate tracking.
 
-2) orrespondence Matching: Once you have detected keypoints in both images, you need to find correspondences between the keypoints in Image A and those in Image B. This step establishes a link between the keypoints in the two images.
+2) Correspondence Matching: Establish correspondences between keypoints across consecutive frames. This is typically achieved using feature matching techniques (e.g., SIFT, SURF, ORB) or deep learning-based methods (e.g., matching keypoints with neural networks).
 
-3) PnP Pose Estimation: Using the correspondences, you can now apply the PnP algorithm to each image independently. PnP will estimate the 3D pose (position and orientation) of the object relative to the camera for both Image A and Image B.
+3) Motion Estimation: With correspondences established, you can use motion estimation techniques (e.g., optical flow) to track the keypoints' movement between frames. This step helps ensure the keypoints are consistently tracked, even in cases of partial occlusions or object deformations.
 
-4) Comparison of Poses: Now that you have the 3D poses estimated for both images, you can compare the two poses to determine if they are similar or not. The comparison can be based on various metrics, such as the relative position and orientation of the object.
+4) PnP Pose Estimation: For each frame, apply PnP pose estimation to estimate the 3D pose of the object or person relative to the camera. You can use the 2D-3D correspondences obtained from the previous steps as input to the PnP algorithm.
+
+5) Comparison of Poses: Compare the estimated poses across different frames to assess their similarity. You can use metrics like Euclidean distance, quaternion distance, or angle differences between the orientations to quantify the similarity.
+
+6) Temporal Consistency: To further improve accuracy, consider the temporal consistency of the poses. The pose should change smoothly and gradually over time, assuming the object or person is moving naturally.
+
+Here is an apporach for 2 videos with two different people
+
+1) Pose Estimation: Apply pose estimation to both videos to extract the keypoint information for each person's movement in each frame. This will give you the 2D or 3D coordinates of the keypoints representing their body joints or relevant points.
+
+2) Motion Analysis: Perform motion analysis to understand the temporal dynamics of the movements. You can use techniques like motion trajectories, velocity analysis, or keypoint trajectories over time to capture the characteristic motion patterns.
+
+3) Feature Extraction: Extract relevant features from the pose and motion data that capture the essence of the movement patterns. These features might include joint angles, velocities, or any other relevant descriptors that represent the movement.
+
+4) Similarity Metrics: Define similarity metrics to compare the movement patterns between the two videos. You may use distance metrics (e.g., Euclidean distance, cosine similarity) or more advanced techniques like dynamic time warping (DTW) to compare the feature sequences and quantify their similarity.
+
+5) Thresholding and Classification: Set an appropriate threshold or similarity score to determine if the movements are similar or dissimilar. Depending on your threshold, you can classify the movements as either the "same" movement or "different" movements.
 
 
 
