@@ -8,8 +8,8 @@ export default function MainPage()
     return (
         <div className="main_wrapper">
             <div className="input_wrapper">    
-                <VideoSection/>
-                <VideoSection/>
+                <VideoSection type={"Input"}/>
+                <VideoSection type={"Output"}/>
             </div>
             <div>
                 <h1>Comparison Score Section</h1>
