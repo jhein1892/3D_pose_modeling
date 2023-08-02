@@ -1,6 +1,9 @@
+import axios from 'axios';
 import '../styles/App.sass';
 import Header from '../components/header';
 import MainPage from '../components/main';
+
+import React, {useState, useEffect} from 'react';
 /*
  * This is gonig to be a single page app to start with, and will essentially be just an  
  * MVP to see if this idea works.
@@ -13,6 +16,17 @@ import MainPage from '../components/main';
  * */ 
 
 function App() {
+
+  useEffect(() => {
+    axios.get("http://127.0.0.1:5000/")
+      .then((response) => {
+        console.log(response)
+      })
+      .catch((error) => {
+        console.error(error)
+      })
+  }, [])
+
   return (
     <div className="App">
       <Header/>
