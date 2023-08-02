@@ -11,7 +11,7 @@ export default function MainPage()
                 <VideoSection type={"Input"}/>
                 <VideoSection type={"Output"}/>
             </div>
-            <div>
+            <div className="comparison_wrapper">
                 <h1>Comparison Score Section</h1>
             </div>
 
