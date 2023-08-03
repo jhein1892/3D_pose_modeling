@@ -24,7 +24,7 @@ export default function VideoSection({type})
             </div>
             <div className="video_section">
                 {selectedVideo && 
-                    <video controls width="400">
+                    <video controls>
                         <source src={URL.createObjectURL(selectedVideo)} type="video/mp4" />
                     </video>
                 }
