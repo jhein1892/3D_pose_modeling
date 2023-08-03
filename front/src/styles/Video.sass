@@ -3,7 +3,27 @@
     background: #dfdfdf
     height: 100%
     display: flex
+    position: relative
+    flex-direction: column
     align-items: center
     justify-content: center
+
+    .top_section
+        background: red
+        width: 100%
+        height: 100px
+        position: absolute
+        top: 0
+        display: flex
+        flex-direction: column
+        align-items: center
+        justify-content: space-around
+        
+    .video_section
+        background: green
+        width: 100%
+        height: calc( 100% - 100px )
+        position: absolute
+        top: 100px
     h1
         margin: 0
