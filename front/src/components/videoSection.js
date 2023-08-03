@@ -9,10 +9,9 @@ export default function VideoSection({type})
         <div className="video_wrapper">
             <div className="top_section">
                 <h1>Video Section: {type}</h1>
-                <input type="file"/>
+                <input type="file" />
             </div>
             <div className="video_section">
-                <h3>This is the video display section</h3>
             </div>
         </div>
     )
