@@ -35,14 +35,20 @@ def process_video():
         video_file = request.files['video']
         if video_file.filename != '':
             filename = secure_filename(video_file.filename)
+            # filename = video_file.filename
             video_filepath = os.path.join(app.config['UPLOAD_FOLDER'], filename)
             video_file.save(video_filepath)
 
             annotated_filepath = os.path.join(app.config['ANNOTATED_FOLDER'], filename)
+            print("Before processing")
             process_and_annotate_video(video_filepath, annotated_filepath)
+            print("Done processing")
 
-            annotate_url = f'http://localhost:5000/annotated/{filename}'
-            return jsonify({'message': 'Video processed and annotated', 'annotatedUrl': annotate_url }), 200
+            # I dont think that passing a URL is the way to do this. I think I should pass back a blob just like I do to get the Video back here in the first place.
+
+            annotate_url = f'http://localhost:3000/annotated/{filename}'
+            print(annotate_url)
+            return {'message': 'Video processed and annotated', 'annotatedUrl': annotate_url }, 200
         
     return jsonify({'error': 'No video file in request'}), 400
 

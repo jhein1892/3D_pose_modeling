@@ -5,6 +5,7 @@ import "../styles/Video.sass"
 export default function VideoSection({type})
 {
     const [selectedVideo, setSelectedVideo] = useState(null);
+    const [annotatedVideo, setAnnotatedVideo] = useState(null);
     /**
      * 1) Upload Video
      * 2) Pass Video to backend
@@ -21,12 +22,13 @@ export default function VideoSection({type})
         const formData = new FormData();
         formData.append('video', selectedVideo);
 
-        axios.post("http://127.0.0.1:5000/upload", formData)
+        axios.post("http://127.0.0.1:5000/process_video", formData)
         .then((response) => {
-            console.log(response.data);
+            setAnnotatedVideo(response.data.annotatedUrl);
+            console.log(response)
         })
         .catch((error) => {
-            console.error(error);
+            console.error("Error processing and annotating video: ", error);
         })
 
     }
@@ -38,9 +40,9 @@ export default function VideoSection({type})
                 <input type="file" accept='video/' onChange={handleVideoChange} />
             </div>
             <div className="video_section">
-                {selectedVideo && 
-                    <video controls>
-                        <source src={URL.createObjectURL(selectedVideo)} type="video/mp4" />
+                {annotatedVideo && 
+                    <video controls width='400'>
+                        <source src={annotatedVideo} type="video/mp4" />
                     </video>
                 }
             </div>
