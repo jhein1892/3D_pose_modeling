@@ -141,3 +141,9 @@ https://openaccess.thecvf.com/content_CVPR_2019/papers/Sun_Deep_High-Resolution_
 https://openaccess.thecvf.com/content/CVPR2022/papers/Weng_HumanNeRF_Free-Viewpoint_Rendering_of_Moving_People_From_Monocular_Video_CVPR_2022_paper.pdf
 - Focusing on reconstructing an image or a frame from a video from another angle. 
 - Really heavy with the math, and no github repo to reference.
+
+
+
+
+## Current Step
+- Video being sent successfully to backend. I need to run a pose recognition on the video on the backend, annotate the poses to the video and then send it back to the front end to view.
