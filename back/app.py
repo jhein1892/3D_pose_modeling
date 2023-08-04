@@ -16,8 +16,11 @@ def hello():
 
 @app.route('/upload', methods=["POST"])
 def uploadVideo():
-    print("Upload Complete")
-
+    if 'video' in request.files:
+        video_file = request.files['video']
+        return {'message': 'Video uploaded successfully'}, 200
+    else:
+        return{'mesage': 'No Video sent'}, 400
 
 if __name__ == "__main__":
     app.run()
