@@ -1,4 +1,5 @@
 import React, {useState, useEffect} from 'react';
+import axios from 'axios';
 import "../styles/Video.sass"
 
 export default function VideoSection({type})
@@ -16,6 +17,20 @@ export default function VideoSection({type})
         setSelectedVideo(file);
     }
 
+    const uploadVideo = () => {
+        const formData = new FormData();
+        formData.append('video', selectedVideo);
+
+        axios.post("http://127.0.0.1:5000/upload", formData)
+        .then((response) => {
+            console.log(response.data);
+        })
+        .catch((error) => {
+            console.error(error);
+        })
+
+    }
+
     return (
         <div className="video_wrapper">
             <div className="top_section">
@@ -29,6 +44,9 @@ export default function VideoSection({type})
                     </video>
                 }
             </div>
+            {selectedVideo &&
+                <button onClick={uploadVideo}>Upload Video</button>
+            }
         </div>
     )
 }

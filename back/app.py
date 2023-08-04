@@ -14,6 +14,10 @@ def hello():
     print("HERE")
     return make_response({"response" : "Hello World"})
 
+@app.route('/upload', methods=["POST"])
+def uploadVideo():
+    print("Upload Complete")
+
 
 if __name__ == "__main__":
     app.run()
