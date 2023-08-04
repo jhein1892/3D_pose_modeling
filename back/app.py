@@ -1,13 +1,11 @@
-from flask import Flask, make_response, request
+from flask import Flask, make_response, request, jsonify, send_from_directory
+from werkzeug.utils import secure_filename
+import os
+import cv2
 from flask_cors import CORS
 
 app = Flask(__name__)
 CORS(app, origins=["http://localhost:3000"], methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"])
-# cors = CORS(app, resources={r"/*": {"origins": "http://localhost:3000"}})
-
-# @app.route('/', methods=["GET"])
-# def handle_request():
-#     return "", 200
 
 @app.route('/')
 def hello():
@@ -21,6 +19,10 @@ def uploadVideo():
         return {'message': 'Video uploaded successfully'}, 200
     else:
         return{'mesage': 'No Video sent'}, 400
+
+@app.route('/process_video', methods=['POST'])
+def process_video():
+    
 
 if __name__ == "__main__":
     app.run()
