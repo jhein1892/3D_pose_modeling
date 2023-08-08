@@ -21,11 +21,19 @@ export default function VideoSection({type})
     const uploadVideo = () => {
         const formData = new FormData();
         formData.append('video', selectedVideo);
+        console.log(selectedVideo)
+        // setAnnotatedVideo(selectedVideo)
 
-        axios.post("http://127.0.0.1:5000/process_video", formData)
+
+        axios.post("http://127.0.0.1:5000/process_video", formData, {
+            responseType: 'arraybuffer'
+        })
         .then((response) => {
-            setAnnotatedVideo(response.data.annotatedUrl);
+            const blob = new Blob([response.data], { type: "video/mp4" });
             console.log(response)
+            const videoUrl = URL.createObjectURL(blob);
+
+            setAnnotatedVideo(videoUrl);
         })
         .catch((error) => {
             console.error("Error processing and annotating video: ", error);
@@ -41,7 +49,7 @@ export default function VideoSection({type})
             </div>
             <div className="video_section">
                 {annotatedVideo && 
-                    <video controls width='400'>
+                    <video controls width='400' autoPlay loop>
                         <source src={annotatedVideo} type="video/mp4" />
                     </video>
                 }

@@ -1,4 +1,4 @@
-from flask import Flask, make_response, request, jsonify, send_from_directory
+from flask import Flask, make_response, request, jsonify, send_file
 from werkzeug.utils import secure_filename
 import os
 import cv2
@@ -34,21 +34,26 @@ def process_video():
     if 'video' in request.files:
         video_file = request.files['video']
         if video_file.filename != '':
+
+
             filename = secure_filename(video_file.filename)
             # filename = video_file.filename
             video_filepath = os.path.join(app.config['UPLOAD_FOLDER'], filename)
-            video_file.save(video_filepath)
-
-            annotated_filepath = os.path.join(app.config['ANNOTATED_FOLDER'], filename)
-            print("Before processing")
-            process_and_annotate_video(video_filepath, annotated_filepath)
+            
             print("Done processing")
+            return send_file(video_filepath, as_attachment=True)
+            # print(video_filepath)
+            # video_file.save(video_filepath)
 
-            # I dont think that passing a URL is the way to do this. I think I should pass back a blob just like I do to get the Video back here in the first place.
+            # annotated_filepath = os.path.join(app.config['ANNOTATED_FOLDER'], filename)
+            # print("Before processing")
+            # # process_and_annotate_video(video_filepath, annotated_filepath)
 
-            annotate_url = f'http://localhost:3000/annotated/{filename}'
-            print(annotate_url)
-            return {'message': 'Video processed and annotated', 'annotatedUrl': annotate_url }, 200
+            # # I dont think that passing a URL is the way to do this. I think I should pass back a blob just like I do to get the Video back here in the first place.
+
+
+            # # print(annotate_url)
+            # return send_file(annotated_filepath, mimetype='video/quicktime')
         
     return jsonify({'error': 'No video file in request'}), 400
 
@@ -72,9 +77,11 @@ def process_and_annotate_video(input_filepath, output_filepath):
     cap.release()
     out.release()
 
-@app.route('/annotated/<filename>')
+# @app.route('/annotated/<filename>')
 def get_annotated_video(filename):
-    return send_from_directory(app.config['ANNOTATED_FOLDER'], filename)
+    print(filename)
+    return send_file(filename, mimetype="video/mp4")
+    # return send_from_directory(app.config['ANNOTATED_FOLDER'], filename)
     
 
 
