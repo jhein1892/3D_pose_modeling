@@ -42,11 +42,12 @@ def process_video():
             
             annotated_filepath = os.path.join(app.config['ANNOTATED_FOLDER'], filename)
             print("Before processing")
+            
+            # Check if the annotated_filepath already exists or not
             process_and_annotate_video(video_filepath, annotated_filepath)
             print("Done processing")
 
             return send_file(annotated_filepath, as_attachment=True)
-            # return send_file(video_filepath, as_attachment=True)
         
     return jsonify({'error': 'No video file in request'}), 400
 
