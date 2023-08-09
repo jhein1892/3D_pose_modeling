@@ -21,7 +21,6 @@ export default function VideoSection({type})
     const uploadVideo = () => {
         const formData = new FormData();
         formData.append('video', selectedVideo);
-        console.log(selectedVideo)
         // setAnnotatedVideo(selectedVideo)
 
 

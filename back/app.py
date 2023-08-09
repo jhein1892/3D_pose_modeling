@@ -35,35 +35,37 @@ def process_video():
         video_file = request.files['video']
         if video_file.filename != '':
 
-
             filename = secure_filename(video_file.filename)
             # filename = video_file.filename
             video_filepath = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+            video_file.save(video_filepath)
             
+            annotated_filepath = os.path.join(app.config['ANNOTATED_FOLDER'], filename)
+            print("Before processing")
+            process_and_annotate_video(video_filepath, annotated_filepath)
             print("Done processing")
-            return send_file(video_filepath, as_attachment=True)
-            # print(video_filepath)
-            # video_file.save(video_filepath)
 
-            # annotated_filepath = os.path.join(app.config['ANNOTATED_FOLDER'], filename)
-            # print("Before processing")
-            # # process_and_annotate_video(video_filepath, annotated_filepath)
-
-            # # I dont think that passing a URL is the way to do this. I think I should pass back a blob just like I do to get the Video back here in the first place.
-
-
-            # # print(annotate_url)
-            # return send_file(annotated_filepath, mimetype='video/quicktime')
+            return send_file(annotated_filepath, as_attachment=True)
+            # return send_file(video_filepath, as_attachment=True)
         
     return jsonify({'error': 'No video file in request'}), 400
 
 
 def process_and_annotate_video(input_filepath, output_filepath):
     cap = cv2.VideoCapture(input_filepath)
+
+    if not cap.isOpened():
+        print("Error: Could not open video Capture")
+    
+    fps = int(cap.get(cv2.CAP_PROP_FPS))
+    width = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH))
+    height = int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
+
+    fourcc= int(cap.get(cv2.CAP_PROP_FOURCC))
+    out = cv2.VideoWriter(output_filepath, fourcc, fps, (width, height))
      
      ## OpenCV pose recognition and annotation code goes here
 
-    out = cv2.VideoWriter(output_filepath, cv2.VideoWriter_fourcc(*'mp4v'), cap.get(cv2.CAP_PROP_FPS), (int(cap.get(3)), int(cap.get(4))))
 
     while cap.isOpened():
         ret, frame = cap.read()
@@ -73,6 +75,8 @@ def process_and_annotate_video(input_filepath, output_filepath):
         ## Perform pose recignition and annotation on the frame
 
         out.write(frame)
+    
+    
     
     cap.release()
     out.release()
