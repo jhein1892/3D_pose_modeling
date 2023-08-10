@@ -41,11 +41,16 @@ def process_video():
             video_file.save(video_filepath)
             
             annotated_filepath = os.path.join(app.config['ANNOTATED_FOLDER'], filename)
-            print("Before processing")
-            
+            if os.path.exists(annotated_filepath):
+                print("Already exists")
+
+            else:
+                print("New Video")
+                print("Before processing")
+                process_and_annotate_video(video_filepath, annotated_filepath)
+                print("Done processing")
+
             # Check if the annotated_filepath already exists or not
-            process_and_annotate_video(video_filepath, annotated_filepath)
-            print("Done processing")
 
             return send_file(annotated_filepath, as_attachment=True)
         
