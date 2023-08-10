@@ -3,6 +3,7 @@ from werkzeug.utils import secure_filename
 import os
 import cv2
 from flask_cors import CORS
+from PoseModule import PoseDetector
 
 app = Flask(__name__)
 
@@ -71,12 +72,17 @@ def process_and_annotate_video(input_filepath, output_filepath):
     out = cv2.VideoWriter(output_filepath, fourcc, fps, (width, height))
      
      ## OpenCV pose recognition and annotation code goes here
-
+    detector = PoseDetector()
 
     while cap.isOpened():
         ret, frame = cap.read()
         if not ret:
             break
+        
+        frame = detector.findPose(img=frame)
+        # lmList = detector.getPosition(frame)
+
+
 
         ## Perform pose recignition and annotation on the frame
 
