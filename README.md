@@ -146,6 +146,5 @@ https://openaccess.thecvf.com/content/CVPR2022/papers/Weng_HumanNeRF_Free-Viewpo
 
 
 ## Current Step
-- Video able to be sent to backend, a new version of it created (without pose recognition or annotation), and sent back to front end.
-- Next: Start implementing pose-recognition into the annotated videos.
-     - Its ok if these steps take a while, because once they are uploaded, they are just going to be pulled and sent from the database, so I don't need to redo this annotation everytime they are being reference
+- We have the annotated video with Pose-Recognition processed and stored in the frames.
+- Need to look into Motion Analysis
