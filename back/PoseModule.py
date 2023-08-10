@@ -15,6 +15,8 @@ class PoseDetector:
         self.mpPose = mp.solutions.pose
         self.pose = self.mpPose.Pose(self.mode, self.upBody, self.smooth, self.detectionCon, self.trackCon)
 
+
+    # Identifies and creates a visual representation of the pose-landmarks
     def findPose(self, img, draw = True):
         imgRBG = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
         self.results = self.pose.process(imgRBG)
@@ -26,6 +28,7 @@ class PoseDetector:
         return img
 
 
+    # This is used to actually get the coordinates of the landmarks. In future will store these values and hopefully be able to generate a movement based off them to compare to live video footage
     def getPosition(self, img, draw = True): 
         lmList = []
         if self.results.pose_landmarks:
