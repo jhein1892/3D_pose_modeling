@@ -103,7 +103,10 @@ def process_and_annotate_video(input_filepath, output_filepath):
         print(frame[0])
 
     
-    
+    # Next: Seperate each landmark into it's own list, Normalizing the the keypoint location against the initial location so that we can see the movement of that landmark.
+
+    # Go through the lmList and assign each frame[0][0] to its distinct list, timestamp can also be in it's own list for reference.
+        # Make sure to subtract initial location from subsequent locations of same landmark.
     
     
     cap.release()
