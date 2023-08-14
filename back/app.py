@@ -70,23 +70,39 @@ def process_and_annotate_video(input_filepath, output_filepath):
 
     fourcc= int(cap.get(cv2.CAP_PROP_FOURCC))
     out = cv2.VideoWriter(output_filepath, fourcc, fps, (width, height))
-     
+
+    timeInt = float(1 / fps)
+    
+    currentCount = 0
      ## OpenCV pose recognition and annotation code goes here
     detector = PoseDetector()
+
+    lmList = []
 
     while cap.isOpened():
         ret, frame = cap.read()
         if not ret:
             break
-        
+
+        # This is the visual Pose estimation
         frame = detector.findPose(img=frame)
-        # lmList = detector.getPosition(frame)
 
+        # This is getting the keypoint location for each frame.
+        coords = detector.getPosition(img=frame, draw=False)
 
-
+        # Append a nested array with the current timestamp and coordinates
+        currentTime = timeInt * currentCount
+        lmList.append([currentTime,coords])
+        
+        currentCount = currentCount + 1
         ## Perform pose recignition and annotation on the frame
 
         out.write(frame)
+
+    for frame in lmList:
+        print(frame[0])
+
+    
     
     
     
