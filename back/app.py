@@ -78,7 +78,7 @@ def process_and_annotate_video(input_filepath, output_filepath):
     detector = PoseDetector()
 
     lmList = []
-    timestampList = []
+    vidData = dict()
 
     while cap.isOpened():
         ret, frame = cap.read()
@@ -87,23 +87,24 @@ def process_and_annotate_video(input_filepath, output_filepath):
 
         # This is the visual Pose estimation
         frame = detector.findPose(img=frame)
+        coords = detector.getPosition(img=frame, draw=False)
+        coords = createTimeSequence(coords)
         
         # Adding new timestamp to list of timestamps
         currentTime = timeInt * currentCount
-        timestampList.append(currentTime)
+        if currentCount == 0:
+            vidData['time'] = [currentTime]
+            for k, v in coords.items():
+                vidData[k] = [v]
+        else:
+            vidData['time'].append(currentTime)
+            for k, v in coords.items():
+                vidData[k].append(v)
+       
         currentCount = currentCount + 1
-
-
-        # This is getting the keypoint location for each frame.
-        coords = detector.getPosition(img=frame, draw=False)
-        # Add them to the lists
-        lmList.append(coords)
-
         out.write(frame)
 
-    for frame in lmList:
-        print(frame[0])
-
+    print(vidData)
     
     # Next: Seperate each landmark into it's own list, Normalizing the the keypoint location against the initial location so that we can see the movement of that landmark.
 
@@ -121,7 +122,23 @@ def get_annotated_video(filename):
     # return send_from_directory(app.config['ANNOTATED_FOLDER'], filename)
     
 
+def createTimeSequence(coords):
+    coordDict = dict()
+    for lm in coords:
+        coordDict[lm[0]] = [lm[1], lm[2]]
 
+    return coordDict
+
+
+    # I have:  [[0, 871, 847], [1, 876, 828], [2, 881, 828], [3, 886, 827], [4, 858, 830], [5, 850, 831], [6, 842, 832], [7, 889, 833], [8, 830, 839], [9, 880, 865].....
+
+
+
+    # I want to get back:
+    # {
+    #   0:[871, 847], 
+    #   1:[876,828]....
+    # }
 
 if __name__ == "__main__":
     app.run()
