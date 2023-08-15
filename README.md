@@ -148,3 +148,7 @@ https://openaccess.thecvf.com/content/CVPR2022/papers/Weng_HumanNeRF_Free-Viewpo
 ## Current Step
 - We have the annotated video with Pose-Recognition processed and stored in the frames.
 - Need to look into Motion Analysis
+
+
+# Important
+- When we are going to compare videos, we are going to use Dynamic Time Warping. I'll need to look into how this works in regards to different camera angles, but it seems like it might be a good fit. 

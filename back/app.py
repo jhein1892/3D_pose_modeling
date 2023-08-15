@@ -114,7 +114,9 @@ def process_and_annotate_video(input_filepath, output_filepath):
         currentCount = currentCount + 1
         out.write(frame)
 
-        
+    print(f"Data: {vidData[0]}")
+    print(f"relMovement: {relMovement[0]}")
+
     cap.release()
     out.release()
 
@@ -132,16 +134,14 @@ def createTimeSequence(coords):
 
     return coordDict
 
+# When I get to comparing two different videos, I'm going to use DTW.
+# def createDTWComp(coords1, coords2):
+    # pip install fastdtw
+    # from fastdtw import fastdtw
 
-    # I have:  [[0, 871, 847], [1, 876, 828], [2, 881, 828], [3, 886, 827], [4, 858, 830], [5, 850, 831], [6, 842, 832], [7, 889, 833], [8, 830, 839], [9, 880, 865].....
-
-
-
-    # I want to get back:
-    # {
-    #   0:[871, 847], 
-    #   1:[876,828]....
-    # }
+#   distance, alignment_path = fastdtw(coords1, coords2)
+#   print("DTW distance:", distance)
+#   print("Alignment Path:", alignment_path)
 
 if __name__ == "__main__":
     app.run()
