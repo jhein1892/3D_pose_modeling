@@ -78,6 +78,7 @@ def process_and_annotate_video(input_filepath, output_filepath):
     detector = PoseDetector()
 
     lmList = []
+    timestampList = []
 
     while cap.isOpened():
         ret, frame = cap.read()
@@ -86,16 +87,17 @@ def process_and_annotate_video(input_filepath, output_filepath):
 
         # This is the visual Pose estimation
         frame = detector.findPose(img=frame)
+        
+        # Adding new timestamp to list of timestamps
+        currentTime = timeInt * currentCount
+        timestampList.append(currentTime)
+        currentCount = currentCount + 1
+
 
         # This is getting the keypoint location for each frame.
         coords = detector.getPosition(img=frame, draw=False)
-
-        # Append a nested array with the current timestamp and coordinates
-        currentTime = timeInt * currentCount
-        lmList.append([currentTime,coords])
-        
-        currentCount = currentCount + 1
-        ## Perform pose recignition and annotation on the frame
+        # Add them to the lists
+        lmList.append(coords)
 
         out.write(frame)
 
