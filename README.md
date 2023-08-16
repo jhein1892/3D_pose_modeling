@@ -152,3 +152,9 @@ https://openaccess.thecvf.com/content/CVPR2022/papers/Weng_HumanNeRF_Free-Viewpo
 
 # Important
 - When we are going to compare videos, we are going to use Dynamic Time Warping. I'll need to look into how this works in regards to different camera angles, but it seems like it might be a good fit. 
+
+
+# Full Scale Implementation
+I think that I can get set it up so that on the website that's where coaches can upload new videos and that's where we can do a bunch of the processing for the videos. That way when we are going to use the mobile application we only need to load the data from the database and compare it to the stream from the phone.
+
+Of course, we will be able to run the full application through the website as well,and the only thing that we wont be able to do on the mobile application is upload new videos from the coaches?
