@@ -143,8 +143,6 @@ https://openaccess.thecvf.com/content/CVPR2022/papers/Weng_HumanNeRF_Free-Viewpo
 - Really heavy with the math, and no github repo to reference.
 
 
-
-
 ## Current Step
 - We have the annotated video with Pose-Recognition processed and stored in the frames.
 - Need to look into Motion Analysis

@@ -1,18 +1,20 @@
 from flask import Flask, make_response, request, jsonify, send_file
 from werkzeug.utils import secure_filename
+import json
 import os
 import cv2
 from flask_cors import CORS
 from PoseModule import PoseDetector
 
+
 app = Flask(__name__)
 
 UPLOAD_FOLDER  = 'uploads'
 ANNOTATED_FOLDER = 'annotated'
+DATA_FOLDER = 'data'
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 app.config['ANNOTATED_FOLDER'] = ANNOTATED_FOLDER
-
-
+app.config['DATA_FOLDER'] = DATA_FOLDER
 
 
 CORS(app, origins=["http://localhost:3000"], methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"])
@@ -35,20 +37,20 @@ def process_video():
     if 'video' in request.files:
         video_file = request.files['video']
         if video_file.filename != '':
-
             filename = secure_filename(video_file.filename)
             # filename = video_file.filename
             video_filepath = os.path.join(app.config['UPLOAD_FOLDER'], filename)
             video_file.save(video_filepath)
             
             annotated_filepath = os.path.join(app.config['ANNOTATED_FOLDER'], filename)
+            data_filepath = os.path.join(app.config['DATA_FOLDER'], filename)
             if os.path.exists(annotated_filepath):
                 print("Already exists")
 
             else:
                 print("New Video")
                 print("Before processing")
-                process_and_annotate_video(video_filepath, annotated_filepath)
+                process_and_annotate_video(video_filepath, annotated_filepath, data_filepath)
                 print("Done processing")
 
             # Check if the annotated_filepath already exists or not
@@ -58,7 +60,7 @@ def process_video():
     return jsonify({'error': 'No video file in request'}), 400
 
 
-def process_and_annotate_video(input_filepath, output_filepath):
+def process_and_annotate_video(input_filepath, output_filepath, data_filepath):
     cap = cv2.VideoCapture(input_filepath)
 
     if not cap.isOpened():
@@ -97,14 +99,14 @@ def process_and_annotate_video(input_filepath, output_filepath):
         # Adding new timestamp to list of timestamps
         currentTime = timeInt * currentCount
         if currentCount == 0:
-            vidData['time'] = [currentTime]
+            # vidData['time'] = [currentTime]
             for k, v in coords.items():
                 vidData[k] = [v]
                 startCoord[k] = v
                 relMovement[k] = [[0,0]]
             
         else:
-            vidData['time'].append(currentTime)
+            # vidData['time'].append(currentTime)
             for k, v in coords.items():
                 vidData[k].append(v)
 
@@ -114,8 +116,13 @@ def process_and_annotate_video(input_filepath, output_filepath):
         currentCount = currentCount + 1
         out.write(frame)
 
-    print(f"Data: {vidData[0]}")
-    print(f"relMovement: {relMovement[0]}")
+    json_object = json.dumps(vidData, indent=4)
+    with open(data_filepath, "w") as outfile:
+        outfile.write(json_object)
+
+
+    # print(f"Data: {vidData[0]}")
+    # print(f"relMovement: {relMovement[0]}")
 
     cap.release()
     out.release()
