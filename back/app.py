@@ -28,12 +28,20 @@ def hello():
 def compareVideos():
     # Get the names of the two videos we want to compare.
     data = request.get_json()
-    print("Comparing Videos", data['User'] == None)
+
     # Check that we have two videos being sent over.
-    if data['User'] != None and data['Coach'] != None:
-        return 200
-    else:
+    if data['User'] == None or data['Coach'] == None:
         return jsonify({'error': 'Need two videos'}), 400
+
+    # Get the Coach's video data
+
+    # Run processing on User's video to gather coordinates
+
+    # Run comparison on two sets of coordinates
+
+
+    
+
     
 @app.route('/upload', methods=["POST"])
 def uploadVideo():
