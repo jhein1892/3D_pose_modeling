@@ -6,7 +6,7 @@ import VideoSection from "./videoSection"
 export default function MainPage()
 {
 
-    const [videoTitle, setVideoTitle] = useState({"User":"", "Coach": ""})
+    const [videoTitle, setVideoTitle] = useState({"User":null, "Coach": null})
 
     function handleVideoCompare(){
         console.log(videoTitle)
