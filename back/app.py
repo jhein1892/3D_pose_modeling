@@ -59,7 +59,6 @@ def process_video():
         
     return jsonify({'error': 'No video file in request'}), 400
 
-
 def process_and_annotate_video(input_filepath, output_filepath, data_filepath):
     cap = cv2.VideoCapture(input_filepath)
 
