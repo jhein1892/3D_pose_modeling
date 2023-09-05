@@ -16,6 +16,7 @@ export default function VideoSection({userType, setVideoTitle})
     const handleVideoChange = (event) => {
         const file = event.target.files[0];
         setVideoTitle(prev => ({...prev, [userType]: file.name}));
+        // I should check here if we have a video with that title already, and in that case, we don't need to upload, we just need to retrieve.
         setSelectedVideo(file);
     }
 

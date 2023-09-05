@@ -1,4 +1,5 @@
 import React, {useState} from "react"
+import axios from "axios"
 import "../styles/Main.sass"
 import VideoSection from "./videoSection"
 
@@ -9,6 +10,10 @@ export default function MainPage()
 
     function handleVideoCompare(){
         console.log(videoTitle)
+        axios.post("http://127.0.0.1:5000/compare_videos", videoTitle)
+        .then((response) => {
+            console.log(response)
+        })
     }
 
     return (

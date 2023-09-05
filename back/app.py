@@ -24,6 +24,13 @@ def hello():
     print("HERE")
     return make_response({"response" : "Hello World"})
 
+@app.route('/compare_videos', methods=["POST"])
+def compareVideos():
+    # Get the names of the two videos we want to compare.
+    data = request.get_json()
+    print("Comparing Videos", data)
+    return make_response({"status": 200})
+
 @app.route('/upload', methods=["POST"])
 def uploadVideo():
     if 'video' in request.files:
