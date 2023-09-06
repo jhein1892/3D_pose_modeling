@@ -34,11 +34,16 @@ def compareVideos():
         return jsonify({'error': 'Need two videos'}), 400
 
     # Get the Coach's video data
-
+    coach_data_filepath = os.path.join(app.config['DATA_FOLDER'], data['Coach'])
+    with open(coach_data_filepath, 'r') as openfile:
+        coach_data = json.load(openfile)
+    print(coach_data)
+    
     # Run processing on User's video to gather coordinates
-
+    
     # Run comparison on two sets of coordinates
 
+    return jsonify({'status': 200}), 200
 
     
 
