@@ -12,9 +12,11 @@ app = Flask(__name__)
 UPLOAD_FOLDER  = 'uploads'
 ANNOTATED_FOLDER = 'annotated'
 DATA_FOLDER = 'data'
+TEMP_FOLDER = 'temp'
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 app.config['ANNOTATED_FOLDER'] = ANNOTATED_FOLDER
 app.config['DATA_FOLDER'] = DATA_FOLDER
+app.config['TEMP_FOLDER'] = TEMP_FOLDER
 
 
 CORS(app, origins=["http://localhost:3000"], methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"])
@@ -39,15 +41,11 @@ def compareVideos():
     coach_data_filepath = os.path.join(app.config['DATA_FOLDER'], coach)
     with open(coach_data_filepath, 'r') as openfile:
         coach_data = json.load(openfile)
-
     # print(coach_data)
-    # Run processing on User's video to gather coordinates
-    print(user)
-    if user.filename != '':
-        filename = secure_filename(user.filename)
-        print(filename)
-        # I need to pass the video itself to the get_coords function
 
+    # Run processing on User's video to gather coordinates
+    user_coords = get_coords(user)
+    print(user_coords)
     # Run comparison on two sets of coordinates
 
     return jsonify({'status': 200}), 200
@@ -88,9 +86,66 @@ def process_video():
         
     return jsonify({'error': 'No video file in request'}), 400
 
-def get_coords():
+def get_coords(input):
+    # Create a temporary directroy to save uploaded video
+
+    video_path = os.path.join(app.config['TEMP_FOLDER'], input.filename)
+    input.save(video_path)
+
+    cap = cv2.VideoCapture(video_path)
+
+    if not cap.isOpened():
+        print("Error: Could not open Video Capture")
+    else:
+        print("Everything seems fine")
+    
+    fps = int(cap.get(cv2.CAP_PROP_FPS))
+    # width = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH))
+    # height = int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
+    # fourcc= int(cap.get(cv2.CAP_PROP_FOURCC))
+    timeInt = float(1 / fps)
+
+    currentCount = 0
+     ## OpenCV pose recognition and annotation code goes here
+    detector = PoseDetector()
+
+    # Raw LM Coord Data from vid
+    vidData = dict()
+
+    while cap.isOpened():
+        ret, frame = cap.read()
+        if not ret:
+            break
+
+        # This is the visual Pose estimation
+        frame = detector.findPose(img=frame)
+        coords = detector.getPosition(img=frame, draw=False)
+        coords = createTimeSequence(coords)
+        
+        # Adding new timestamp to list of timestamps
+        # currentTime = timeInt * currentCount
+        if currentCount == 0:
+            # vidData['time'] = [currentTime]
+            for k, v in coords.items():
+                vidData[k] = [v]
+                # startCoord[k] = v
+                # relMovement[k] = [[0,0]]
+            
+        else:
+            # vidData['time'].append(currentTime)
+            for k, v in coords.items():
+                vidData[k].append(v)
+
+                # # Calculate relative movement from starting point
+                # relMovement[k].append([int(v[0]) - int(startCoord[k][0]), int(v[1]) - int(startCoord[k][1])])
+        
+        currentCount = currentCount + 1
+        # out.write(frame)
+
+    cap.release()
+    os.remove(video_path)
     # This is doing the same as process_and_annotate_video except it doesn't annotate, just gets coords and returns dict of coords
-    return
+    return vidData
 
 def process_and_annotate_video(input_filepath, output_filepath, data_filepath):
     cap = cv2.VideoCapture(input_filepath)
@@ -105,7 +160,7 @@ def process_and_annotate_video(input_filepath, output_filepath, data_filepath):
     fourcc= int(cap.get(cv2.CAP_PROP_FOURCC))
     out = cv2.VideoWriter(output_filepath, fourcc, fps, (width, height))
 
-    timeInt = float(1 / fps)
+    # timeInt = float(1 / fps)
     
     currentCount = 0
      ## OpenCV pose recognition and annotation code goes here
@@ -129,7 +184,7 @@ def process_and_annotate_video(input_filepath, output_filepath, data_filepath):
         coords = createTimeSequence(coords)
         
         # Adding new timestamp to list of timestamps
-        currentTime = timeInt * currentCount
+        # currentTime = timeInt * currentCount
         if currentCount == 0:
             # vidData['time'] = [currentTime]
             for k, v in coords.items():
