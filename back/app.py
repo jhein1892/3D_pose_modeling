@@ -5,6 +5,7 @@ import os
 import cv2
 from flask_cors import CORS
 from PoseModule import PoseDetector
+from fastdtw import fastdtw
 
 
 app = Flask(__name__)
@@ -45,9 +46,9 @@ def compareVideos():
 
     # Run processing on User's video to gather coordinates
     user_coords = get_coords(user)
-    print(user_coords)
+    # print(user_coords)
     # Run comparison on two sets of coordinates
-
+    coord_comp(user_coords, coach_data)
     return jsonify({'status': 200}), 200
 
 @app.route('/upload', methods=["POST"])
@@ -172,6 +173,7 @@ def process_and_annotate_video(input_filepath, output_filepath, data_filepath):
         if currentCount == 0:
             # vidData['time'] = [currentTime]
             for k, v in coords.items():
+
                 vidData[k] = [v]
                 startCoord[k] = v
                 relMovement[k] = [[0,0]]
@@ -212,6 +214,18 @@ def createTimeSequence(coords):
 
     return coordDict
 
+def coord_comp(user, coach):
+    user_keys = user.keys()
+    coach_keys = coach.keys()
+    print(user_keys, coach_keys)
+    for key in user_keys:
+
+        distance, alignment_path = fastdtw(user[key], coach[str(key)])
+        print(key)
+        print("DTW Distance", distance)
+        # print("Alignment Path", alignment_path)
+        
+    return
 # When I get to comparing two different videos, I'm going to use DTW.
 # def createDTWComp(coords1, coords2):
     # pip install fastdtw
