@@ -86,9 +86,8 @@ def process_video():
         
     return jsonify({'error': 'No video file in request'}), 400
 
+# This is doing the same as process_and_annotate_video except it doesn't annotate, just gets coords and returns dict of coords
 def get_coords(input):
-    # Create a temporary directroy to save uploaded video
-
     video_path = os.path.join(app.config['TEMP_FOLDER'], input.filename)
     input.save(video_path)
 
@@ -99,11 +98,8 @@ def get_coords(input):
     else:
         print("Everything seems fine")
     
-    fps = int(cap.get(cv2.CAP_PROP_FPS))
-    # width = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH))
-    # height = int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
-    # fourcc= int(cap.get(cv2.CAP_PROP_FOURCC))
-    timeInt = float(1 / fps)
+    # fps = int(cap.get(cv2.CAP_PROP_FPS))
+    # timeInt = float(1 / fps)
 
     currentCount = 0
      ## OpenCV pose recognition and annotation code goes here
@@ -121,30 +117,18 @@ def get_coords(input):
         frame = detector.findPose(img=frame)
         coords = detector.getPosition(img=frame, draw=False)
         coords = createTimeSequence(coords)
-        
-        # Adding new timestamp to list of timestamps
-        # currentTime = timeInt * currentCount
+
         if currentCount == 0:
-            # vidData['time'] = [currentTime]
             for k, v in coords.items():
                 vidData[k] = [v]
-                # startCoord[k] = v
-                # relMovement[k] = [[0,0]]
             
         else:
-            # vidData['time'].append(currentTime)
             for k, v in coords.items():
-                vidData[k].append(v)
-
-                # # Calculate relative movement from starting point
-                # relMovement[k].append([int(v[0]) - int(startCoord[k][0]), int(v[1]) - int(startCoord[k][1])])
-        
+                vidData[k].append(v)        
         currentCount = currentCount + 1
-        # out.write(frame)
 
     cap.release()
     os.remove(video_path)
-    # This is doing the same as process_and_annotate_video except it doesn't annotate, just gets coords and returns dict of coords
     return vidData
 
 def process_and_annotate_video(input_filepath, output_filepath, data_filepath):
