@@ -26,28 +26,32 @@ def hello():
 
 @app.route('/compare_videos', methods=["POST"])
 def compareVideos():
+    coach = request.form.get('Coach')
+    user = request.files.get('User')
     # Get the names of the two videos we want to compare.
-    data = request.get_json()
+    # data = request.get_json()
 
-    # Check that we have two videos being sent over.
-    if data['User'] == None or data['Coach'] == None:
+    # # Check that we have two videos being sent over.
+    if coach == None or user == None:
         return jsonify({'error': 'Need two videos'}), 400
 
-    # Get the Coach's video data
-    coach_data_filepath = os.path.join(app.config['DATA_FOLDER'], data['Coach'])
+    # # Get the Coach's video data
+    coach_data_filepath = os.path.join(app.config['DATA_FOLDER'], coach)
     with open(coach_data_filepath, 'r') as openfile:
         coach_data = json.load(openfile)
-    print(coach_data)
-    
+
+    # print(coach_data)
     # Run processing on User's video to gather coordinates
-    
+    print(user)
+    if user.filename != '':
+        filename = secure_filename(user.filename)
+        print(filename)
+        # I need to pass the video itself to the get_coords function
+
     # Run comparison on two sets of coordinates
 
     return jsonify({'status': 200}), 200
 
-    
-
-    
 @app.route('/upload', methods=["POST"])
 def uploadVideo():
     if 'video' in request.files:
@@ -60,6 +64,7 @@ def uploadVideo():
 def process_video():
     if 'video' in request.files:
         video_file = request.files['video']
+        print(video_file)
         if video_file.filename != '':
             filename = secure_filename(video_file.filename)
             # filename = video_file.filename
@@ -82,6 +87,10 @@ def process_video():
             return send_file(annotated_filepath, as_attachment=True)
         
     return jsonify({'error': 'No video file in request'}), 400
+
+def get_coords():
+    # This is doing the same as process_and_annotate_video except it doesn't annotate, just gets coords and returns dict of coords
+    return
 
 def process_and_annotate_video(input_filepath, output_filepath, data_filepath):
     cap = cv2.VideoCapture(input_filepath)
