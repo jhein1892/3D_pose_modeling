@@ -108,6 +108,8 @@ def get_coords(input):
 
     # Raw LM Coord Data from vid
     vidData = dict()
+    startCoord = dict()
+    relMovement = dict()
 
     while cap.isOpened():
         ret, frame = cap.read()
@@ -122,15 +124,18 @@ def get_coords(input):
         if currentCount == 0:
             for k, v in coords.items():
                 vidData[k] = [v]
+                startCoord[k] = v
+                relMovement[k] = [[0,0]]
             
         else:
             for k, v in coords.items():
-                vidData[k].append(v)        
+                vidData[k].append(v)
+                relMovement[k].append([int(v[0]) - int(startCoord[k][0]), int(v[1]) - int(startCoord[k][1])])        
         currentCount = currentCount + 1
 
     cap.release()
     os.remove(video_path)
-    return vidData
+    return relMovement
 
 def process_and_annotate_video(input_filepath, output_filepath, data_filepath):
     cap = cv2.VideoCapture(input_filepath)
@@ -182,14 +187,13 @@ def process_and_annotate_video(input_filepath, output_filepath, data_filepath):
             # vidData['time'].append(currentTime)
             for k, v in coords.items():
                 vidData[k].append(v)
-
                 # Calculate relative movement from starting point
                 relMovement[k].append([int(v[0]) - int(startCoord[k][0]), int(v[1]) - int(startCoord[k][1])])
        
         currentCount = currentCount + 1
         out.write(frame)
-
-    json_object = json.dumps(vidData, indent=4)
+    
+    json_object = json.dumps(relMovement, indent=4)
     with open(data_filepath, "w") as outfile:
         outfile.write(json_object)
 
