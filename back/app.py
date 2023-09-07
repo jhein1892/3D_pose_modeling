@@ -222,13 +222,22 @@ def coord_comp(user, coach):
     user_keys = user.keys()
     coach_keys = coach.keys()
     print(user_keys, coach_keys)
+    dtw_distances = list()
     for key in user_keys:
 
         distance, alignment_path = fastdtw(user[key], coach[str(key)])
         print(key)
-        print("DTW Distance", distance)
+        dtw_distances.append(distance)
+        # print("DTW Distance", distance)
         # print("Alignment Path", alignment_path)
-        
+    print(dtw_distances)
+    max_observed_distance = max(dtw_distances)
+    print(max_observed_distance)
+    normalized_distances = [1 / (1 + (dist / max_observed_distance)) for dist in dtw_distances]
+    print(normalized_distances)
+    accuracy_rate = sum(normalized_distances) / len(normalized_distances)
+    print(accuracy_rate)
+
     return
 # When I get to comparing two different videos, I'm going to use DTW.
 # def createDTWComp(coords1, coords2):
