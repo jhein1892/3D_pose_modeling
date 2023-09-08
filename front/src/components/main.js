@@ -49,10 +49,9 @@ export default function MainPage()
 
     function generateScores(scores){
         return scores.map((score) => {
-            let lmScore = (lmAccuracy[score] * 100).toFixed(2)
             return (
                 <div>
-                    <h4>{lmNames[score]}: %{lmScore}</h4>
+                    <h4>{lmNames[score]}: {lmAccuracy&& <span>%{(lmAccuracy[score] * 100).toFixed(2)}</span>}</h4>
                 </div>
             )
         })
