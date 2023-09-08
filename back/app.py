@@ -243,3 +243,7 @@ def coord_comp(user, coach):
 
 if __name__ == "__main__":
     app.run()
+
+
+
+    # When I circle back around to increasing the accuracy of my data for the coord comp I should look at the certainty of the landmarks from pose estimation. That might help me get rid of some weirddata or help eliminate some lm that get hidden throughout the movement
