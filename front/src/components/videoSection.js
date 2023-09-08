@@ -55,7 +55,7 @@ export default function VideoSection({userType, setVideoTitle})
             </div>
             <div className="video_section">
                 {playVideo && 
-                    <video controls width='400' autoPlay loop>
+                    <video controls width='400' autoPlay loop muted>
                         <source src={playVideo} type="video/mp4" />
                     </video>
                 }
