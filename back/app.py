@@ -49,7 +49,7 @@ def compareVideos():
     # print(user_coords)
     # Run comparison on two sets of coordinates
     comp_vals = coord_comp(user_coords, coach_data)
-    return jsonify({'status': 200, 'data': comp_vals}), 200
+    return jsonify(comp_vals), 200
 
 @app.route('/upload', methods=["POST"])
 def uploadVideo():
