@@ -48,8 +48,9 @@ def compareVideos():
     user_coords = get_coords(user)
     # print(user_coords)
     # Run comparison on two sets of coordinates
-    coord_comp(user_coords, coach_data)
-    return jsonify({'status': 200}), 200
+    comp_vals = coord_comp(user_coords, coach_data)
+    print(comp_vals)
+    return jsonify({'status': 200, 'data': comp_vals}), 200
 
 @app.route('/upload', methods=["POST"])
 def uploadVideo():
@@ -220,33 +221,24 @@ def createTimeSequence(coords):
 
 def coord_comp(user, coach):
     user_keys = user.keys()
-    coach_keys = coach.keys()
-    print(user_keys, coach_keys)
+    # coach_keys = coach.keys()
     dtw_distances = list()
     for key in user_keys:
-
         distance, alignment_path = fastdtw(user[key], coach[str(key)])
-        print(key)
         dtw_distances.append(distance)
         # print("DTW Distance", distance)
         # print("Alignment Path", alignment_path)
-    print(dtw_distances)
+    # print(dtw_distances)
     max_observed_distance = max(dtw_distances)
-    print(max_observed_distance)
-    normalized_distances = [1 / (1 + (dist / max_observed_distance)) for dist in dtw_distances]
-    print(normalized_distances)
+    # print(max_observed_distance)
+    returnVals = dict()
+    normalized_distances = [1 / (1 + (int(dist) / max_observed_distance)) for dist in dtw_distances]
     accuracy_rate = sum(normalized_distances) / len(normalized_distances)
-    print(accuracy_rate)
+    returnVals['normalized'] = normalized_distances
+    returnVals['accuracy'] = accuracy_rate
+    
 
-    return
-# When I get to comparing two different videos, I'm going to use DTW.
-# def createDTWComp(coords1, coords2):
-    # pip install fastdtw
-    # from fastdtw import fastdtw
-
-#   distance, alignment_path = fastdtw(coords1, coords2)
-#   print("DTW distance:", distance)
-#   print("Alignment Path:", alignment_path)
+    return returnVals
 
 if __name__ == "__main__":
     app.run()
