@@ -18,8 +18,8 @@ class PoseDetector:
 
     # Identifies and creates a visual representation of the pose-landmarks
     def findPose(self, img, draw = True):
-        imgRBG = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
-        self.results = self.pose.process(imgRBG)
+        # imgRBG = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
+        self.results = self.pose.process(img)
 
         if self.results.pose_landmarks:
             if draw:
@@ -40,3 +40,4 @@ class PoseDetector:
                     cv2.circle(img, (cx,cy), 5, (255,0,0), cv2.FILLED)
         
         return lmList
+    

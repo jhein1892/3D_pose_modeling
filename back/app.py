@@ -6,6 +6,7 @@ import cv2
 from flask_cors import CORS
 from PoseModule import PoseDetector
 from fastdtw import fastdtw
+import numpy as np
 
 
 app = Flask(__name__)
@@ -132,6 +133,12 @@ def get_coords(input):
                 vidData[k].append(v)
                 relMovement[k].append([int(v[0]) - int(startCoord[k][0]), int(v[1]) - int(startCoord[k][1])])        
         currentCount = currentCount + 1
+    
+    for k,v in relMovement.items():
+        # print(v)
+        smoothed_coords = moving_average_smoothing(v)
+        coords_to_list = smoothed_coords.tolist()
+        relMovement[k] = coords_to_list
 
     cap.release()
     os.remove(video_path)
@@ -193,6 +200,12 @@ def process_and_annotate_video(input_filepath, output_filepath, data_filepath):
         currentCount = currentCount + 1
         out.write(frame)
     
+    for k,v in relMovement.items():
+        # print(v)
+        smoothed_coords = moving_average_smoothing(v)
+        coords_to_list = smoothed_coords.tolist()
+        relMovement[k] = coords_to_list
+    
     json_object = json.dumps(relMovement, indent=4)
     with open(data_filepath, "w") as outfile:
         outfile.write(json_object)
@@ -210,6 +223,16 @@ def get_annotated_video(filename):
     return send_file(filename, mimetype="video/mp4")
     # return send_from_directory(app.config['ANNOTATED_FOLDER'], filename)
     
+def moving_average_smoothing(coordinates, window_size=4):
+    smoothed_coordinates = []
+    for i in range(len(coordinates)):
+        start_index = max(0,i - window_size + 1)
+        end_index = i + 1
+        window = coordinates[start_index: end_index]
+        smoothed_coordinate = np.mean(window, axis = 0)
+        smoothed_coordinates.append(smoothed_coordinate)
+    
+    return np.array(smoothed_coordinates)
 
 def createTimeSequence(coords):
     coordDict = dict()
@@ -232,7 +255,11 @@ def coord_comp(user, coach):
     max_observed_distance = max(dtw_list)
 
     for lm in dtw_distances:
-        dtw_distances[lm] = 1 / (1 +(int(dtw_distances[lm]) / max_observed_distance))
+        if max_observed_distance != 0:
+            dtw_distances[lm] = 1 / (1 +(int(dtw_distances[lm]) / max_observed_distance))
+        else:
+            dtw_distances[lm] = 1
+        
 
     accuracy_rate = sum(dtw_distances.values()) / len(dtw_distances.values())
     returnVals = dict()
