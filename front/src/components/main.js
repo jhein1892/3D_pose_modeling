@@ -2,6 +2,7 @@ import React, {useState} from "react"
 import axios from "axios"
 import "../styles/Main.sass"
 import VideoSection from "./videoSection"
+import classNames from 'classnames'
 
 export default function MainPage()
 {
@@ -49,10 +50,17 @@ export default function MainPage()
 
     function generateScores(scores){
         return scores.map((score) => {
+            const divClasses = classNames({
+                'poor_acc':lmAccuracy && lmAccuracy[score] <= 0.5,
+                'low-mid_acc': lmAccuracy && lmAccuracy[score] <=0.6 && lmAccuracy[score] > 0.5,
+                'medium_acc':lmAccuracy && lmAccuracy[score] <= 0.7 && lmAccuracy[score] > 0.6,
+                'mid-high_acc': lmAccuracy && lmAccuracy[score] <= 0.8 && lmAccuracy[score] > 0.7,
+                'high_acc':lmAccuracy && lmAccuracy[score] > 0.8
+            })
             return (
                 <div className="parts_col">
                     <h4>{lmNames[score]}:</h4>
-                    {lmAccuracy ? <span>%{(lmAccuracy[score] * 100).toFixed(2)}</span>: <span>NA</span>}
+                    {lmAccuracy ? <span className={divClasses}>%{(lmAccuracy[score] * 100).toFixed(2)}</span>: <span>NA</span>}
                 </div>
             )
         })
