@@ -25,5 +25,18 @@
         .parts_wrapper
             display: flex
             flex-direction: row
-            width: 100%
+            width: 80%
             justify-content: space-evenly
+
+            .parts_col
+                display: grid
+                grid-template-columns: 2fr 1fr
+                column-gap: 10px
+                align-items: center
+                
+                h4
+                    justify-self: right
+
+                span
+                    justify-self: left
+
