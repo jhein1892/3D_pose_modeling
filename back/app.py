@@ -94,7 +94,10 @@ def get_coords(input):
     input.save(video_path)
 
     cap = cv2.VideoCapture(video_path)
+    width = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH))
+    height = int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
 
+    print(width, height)
     if not cap.isOpened():
         print("Error: Could not open Video Capture")
     else:
@@ -157,7 +160,7 @@ def process_and_annotate_video(input_filepath, output_filepath, data_filepath):
     fourcc= int(cap.get(cv2.CAP_PROP_FOURCC))
     out = cv2.VideoWriter(output_filepath, fourcc, fps, (width, height))
 
-    # timeInt = float(1 / fps)
+    timeInt = float(1 / fps)
     
     currentCount = 0
      ## OpenCV pose recognition and annotation code goes here
@@ -176,22 +179,21 @@ def process_and_annotate_video(input_filepath, output_filepath, data_filepath):
             break
 
         # This is the visual Pose estimation
-        frame = detector.findPose(img=frame)
-        coords = detector.getPosition(img=frame, draw=False)
+        frame = detector.findPose(img=frame, draw= False)
+        coords = detector.getPosition(img=frame)
         coords = createTimeSequence(coords)
         
         # Adding new timestamp to list of timestamps
-        # currentTime = timeInt * currentCount
+        currentTime = timeInt * currentCount
         if currentCount == 0:
-            # vidData['time'] = [currentTime]
+            vidData['time'] = [currentTime]
             for k, v in coords.items():
-
                 vidData[k] = [v]
                 startCoord[k] = v
                 relMovement[k] = [[0,0]]
             
         else:
-            # vidData['time'].append(currentTime)
+            vidData['time'].append(currentTime)
             for k, v in coords.items():
                 vidData[k].append(v)
                 # Calculate relative movement from starting point
@@ -209,10 +211,6 @@ def process_and_annotate_video(input_filepath, output_filepath, data_filepath):
     json_object = json.dumps(relMovement, indent=4)
     with open(data_filepath, "w") as outfile:
         outfile.write(json_object)
-
-
-    # print(f"Data: {vidData[0]}")
-    # print(f"relMovement: {relMovement[0]}")
 
     cap.release()
     out.release()
@@ -243,14 +241,21 @@ def createTimeSequence(coords):
 
 def coord_comp(user, coach):
     user_keys = user.keys()
-    # coach_keys = coach.keys()
     dtw_list = list()
     dtw_distances = dict()
+    max_allowable_distance = (1080 * 1920) * 0.001
+    # Current best is 0.001
     for key in user_keys:
-        distance, alignment_path = fastdtw(user[key], coach[str(key)])
-        if key not in [1,3,4,6,9,10,17,18,19,20,21,22,29,30,31,32]:
-            dtw_list.append(distance)
-            dtw_distances[key] = distance
+        distance, alignment_path = fastdtw(coach[str(key)],user[key])
+        if key not in [0,1,2,3,4,5,6,7,8,9,10,17,18,19,20,21,22,29,30,31,32]:
+            print(distance)
+            if distance <= max_allowable_distance:
+                dtw_distances[key] = 0
+                dtw_list.append(0)
+            else: 
+                print(distance, max_allowable_distance)
+                dtw_list.append(distance - max_allowable_distance)
+                dtw_distances[key] = distance - max_allowable_distance
 
     max_observed_distance = max(dtw_list)
 
@@ -259,8 +264,7 @@ def coord_comp(user, coach):
             dtw_distances[lm] = 1 / (1 +(int(dtw_distances[lm]) / max_observed_distance))
         else:
             dtw_distances[lm] = 1
-        
-
+    
     accuracy_rate = sum(dtw_distances.values()) / len(dtw_distances.values())
     returnVals = dict()
     returnVals['normalized'] = dtw_distances
