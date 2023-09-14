@@ -122,10 +122,6 @@ export default function MainPage()
                 <h1>Comparison Score Section</h1>
                 <div className="parts_wrapper">
                     <div>
-                        <h3>Head</h3>
-                        {generateScores([0,2,5,7,8])}
-                    </div>
-                    <div>
                         <h3>Upper Body</h3>
                         {generateScores([11,12,13,14,15,16])}
                     </div>
