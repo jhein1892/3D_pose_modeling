@@ -7,6 +7,7 @@ from flask_cors import CORS
 from PoseModule import PoseDetector
 from fastdtw import fastdtw
 import numpy as np
+from scipy.ndimage import gaussian_filter
 
 
 app = Flask(__name__)
@@ -139,7 +140,8 @@ def get_coords(input):
     
     for k,v in relMovement.items():
         # print(v)
-        smoothed_coords = moving_average_smoothing(v)
+        # smoothed_coords = moving_average_smoothing(v)
+        smoothed_coords = gaussian_smoothing(v)
         coords_to_list = smoothed_coords.tolist()
         relMovement[k] = coords_to_list
 
@@ -204,7 +206,8 @@ def process_and_annotate_video(input_filepath, output_filepath, data_filepath):
     
     for k,v in relMovement.items():
         # print(v)
-        smoothed_coords = moving_average_smoothing(v)
+        # smoothed_coords = moving_average_smoothing(v)
+        smoothed_coords = gaussian_smoothing(v)
         coords_to_list = smoothed_coords.tolist()
         relMovement[k] = coords_to_list
     
@@ -232,6 +235,10 @@ def moving_average_smoothing(coordinates, window_size=4):
     
     return np.array(smoothed_coordinates)
 
+def gaussian_smoothing(coordinates, sigma = 1.0):
+    smoothed_coordinates = gaussian_filter(coordinates, sigma = sigma, mode='nearest')
+    return smoothed_coordinates
+
 def createTimeSequence(coords):
     coordDict = dict()
     for lm in coords:
@@ -248,12 +255,14 @@ def coord_comp(user, coach):
     for key in user_keys:
         distance, alignment_path = fastdtw(coach[str(key)],user[key])
         if key not in [0,1,2,3,4,5,6,7,8,9,10,17,18,19,20,21,22,29,30,31,32]:
-            print(distance)
+            if key == 16 or key == 15:
+                print(key)
+                print(coach[str(key)], len(coach[str(key)]))
+                print(user[key], len(user[key]))
             if distance <= max_allowable_distance:
                 dtw_distances[key] = 0
                 dtw_list.append(0)
             else: 
-                print(distance, max_allowable_distance)
                 dtw_list.append(distance - max_allowable_distance)
                 dtw_distances[key] = distance - max_allowable_distance
 

@@ -4,7 +4,7 @@ import time
 
 
 class PoseDetector:
-    def __init__(self, mode = False, upBody = False, smooth = True, detectionCon = True, trackCon = 0.5):
+    def __init__(self, mode = False, upBody = False, smooth = True, detectionCon = True, trackCon = 0.7):
         self.mode = mode
         self.upBody = upBody
         self.smooth = smooth
@@ -13,7 +13,8 @@ class PoseDetector:
 
         self.mpDraw = mp.solutions.drawing_utils
         self.mpPose = mp.solutions.pose
-        self.pose = self.mpPose.Pose(self.mode, self.upBody, self.smooth, self.detectionCon, self.trackCon)
+        # self.pose = self.mpPose.Pose(self.mode, self.upBody, self.smooth, self.detectionCon, self.trackCon)
+        self.pose = self.mpPose.Pose(self.mode, self.upBody, self.smooth,self.detectionCon, self.trackCon, min_tracking_confidence = 0.7)
         
 
 
