@@ -43,7 +43,9 @@ export default function MainPage()
         })
         .then((response) => {
             console.log(response.data)
-            let totAccuracy = (response.data.accuracy * 100).toFixed(2)
+            // let totAccuracy = (response.data.accuracy * 100).toFixed(2)
+            let totAccuracy = Math.round(response.data.accuracy * 100)
+            // let totAccuracy = response.data.accuracy
             setDashArray(`${totAccuracy}, 100`)
             setCompAccuracy(totAccuracy)
             setLmAccuracy(response.data.normalized)
@@ -63,6 +65,7 @@ export default function MainPage()
                 <div className="parts_col">
                     <h4>{lmNames[score]}:</h4>
                     {lmAccuracy ? <span className={divClasses}>{(lmAccuracy[score] * 100).toFixed(2)}%</span>: <span>NA</span>}
+                    {/* {lmAccuracy ? <span className={divClasses}>{lmAccuracy[score]}%</span>: <span>NA</span>} */}
                 </div>
             )
         })
@@ -101,7 +104,7 @@ export default function MainPage()
                             a 15.9155 15.9155 0 0 1 0 -31.831"
                         />
                         {compAccuracy ?
-                            <text x="18" y="20.35" class="percentage">{compAccuracy}</text>
+                            <text x="18" y="20.35" class="percentage">{compAccuracy}%</text>
                             :
                             <text x="18" y="20.35" class="percentage">NA</text>
                         }
