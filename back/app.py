@@ -251,6 +251,7 @@ def coord_comp(user, coach):
     dtw_list = list()
     dtw_distances = dict()
     max_allowable_distance = (1080 * 1920) * 0.001
+    
     # Current best is 0.001
     for key in user_keys:
         distance, alignment_path = fastdtw(coach[str(key)],user[key])
