@@ -1,0 +1,39 @@
+.comparison_wrapper
+    margin-top: 10px
+    display: flex
+    min-height: 15vh
+    justify-content: center
+    align-items: center
+    background: #333333
+    color: white
+    display: flex
+    flex-direction: column
+
+    .parts_wrapper
+        display: flex
+        flex-direction: row
+        width: 80%
+        justify-content: space-evenly
+
+        .parts_col
+            display: grid
+            grid-template-columns: 2fr 1fr
+            column-gap: 10px
+            align-items: center
+            
+            h4
+                justify-self: right
+
+            span
+                justify-self: left
+
+            .poor_acc
+                color: red
+            .low-mid_acc
+                color: orange
+            .medium_acc
+                color: yellow
+            .mid-high_acc
+                color: greenyellow
+            .high_acc
+                color: green
