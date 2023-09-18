@@ -13,53 +13,6 @@
         
         .comp_section
             width : 300px
-            .flex-wrapper
-                display: flex
-                flex-flow: row nowrap
-                justify-content: center
-
-            .single-chart 
-                width: 75%
-                justify-content: space-around
-
-            .circular-chart 
-                display: block
-                margin: 10px auto
-                max-width: 80%
-                max-height: 250px
-
-            .circle-bg 
-                fill: none
-                stroke: #eee
-                stroke-width: 3.8
-
-            .circle
-                fill: none
-                stroke-width: 2.8
-                stroke-linecap: round
-                animation: progress 1s ease forwards
-            .circle_NA
-                fill: none
-                stroke-width: 2.8
-                stroke-linecap: round
-
-            .circular-chart.red .circle 
-                stroke: red
-            .circular-chart.orange .circle 
-                stroke: orange
-            .circular-chart.yellow .circle 
-                stroke: yellow
-            .circular-chart.greenYellow .circle 
-                stroke: greenYellow
-            .circular-chart.green .circle 
-                stroke: green
-            
-            .percentage
-                fill: #666
-                font-family: sans-serif
-                font-size: 0.5em
-                text-anchor: middle
-
    
     .comparison_wrapper
         margin-top: 10px
@@ -100,8 +53,3 @@
                     color: greenyellow
                 .high_acc
                     color: green
-
-
-@keyframes progress 
-    0% 
-        stroke-dasharray: 0 100
