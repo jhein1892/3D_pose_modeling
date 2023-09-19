@@ -6,6 +6,7 @@ export default function VideoSection({userType, setVideoTitle})
 {
     const [selectedVideo, setSelectedVideo] = useState(null);
     const [playVideo, setPlayVideo] = useState(null)
+    const [options, setOptions] = useState([])
     // const [annotatedVideo, setAnnotatedVideo] = useState(null);
 
     const handleVideoChange = (event) => {
@@ -47,11 +48,37 @@ export default function VideoSection({userType, setVideoTitle})
 
     }
 
+
+
+    function generateOptions(){
+        console.log('here')
+        console.log(options)
+        return options.map((vid) => {
+            return (
+                <option>{vid}</option>
+            )
+        })
+
+    }
+
+    useEffect(() => {
+        axios.get("http://127.0.0.1:5000/")
+        .then((response) => {
+            setOptions(response.data.available_vids)
+        })
+    },[])
+
     return (
         <div className="video_wrapper">
             <div className="top_section">
                 <h1>Video Section: {userType}</h1>
-                <input type="file" accept='video/' onClick={() => {setPlayVideo(null)}} onChange={handleVideoChange} />
+                {userType === 'Coach' ?
+                    <select>
+                        {generateOptions()}
+                    </select>
+                    :
+                    <input type="file" accept='video/' onClick={() => {setPlayVideo(null)}} onChange={handleVideoChange} />
+                }
             </div>
             <div className="video_section">
                 {playVideo && 

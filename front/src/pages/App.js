@@ -16,17 +16,6 @@ import React, {useState, useEffect} from 'react';
  * */ 
 
 function App() {
-
-  useEffect(() => {
-    axios.get("http://127.0.0.1:5000/")
-      .then((response) => {
-        console.log(response)
-      })
-      .catch((error) => {
-        console.error(error)
-      })
-  }, [])
-
   return (
     <div className="App">
       <Header/>

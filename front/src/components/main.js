@@ -1,4 +1,4 @@
-import React, {useState} from "react"
+import React, {useEffect, useState} from "react"
 import axios from "axios"
 import "../styles/Main.sass"
 import VideoSection from "./videoSection"
@@ -23,6 +23,8 @@ export default function MainPage()
         })
         .then((response) => {
             let totAccuracy = Math.round(response.data.accuracy * 100)
+            console.log(totAccuracy)
+            console.log(response.data.normalized)
             setDashArray(`${totAccuracy}, 100`)
             setCompAccuracy(totAccuracy)
             setLmAccuracy(response.data.normalized)

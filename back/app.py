@@ -26,8 +26,9 @@ CORS(app, origins=["http://localhost:3000"], methods=["GET", "POST", "PUT", "DEL
 
 @app.route('/')
 def hello():
-    print("HERE")
-    return make_response({"response" : "Hello World"})
+    available_videos = os.listdir(app.config['DATA_FOLDER'])
+    print(available_videos)
+    return make_response({"available_vids" : available_videos})
 
 @app.route('/compare_videos', methods=["POST"])
 def compareVideos():
@@ -251,15 +252,13 @@ def coord_comp(user, coach):
     dtw_list = list()
     dtw_distances = dict()
     max_allowable_distance = (1080 * 1920) * 0.001
-    
+
     # Current best is 0.001
     for key in user_keys:
         distance, alignment_path = fastdtw(coach[str(key)],user[key])
         if key not in [0,1,2,3,4,5,6,7,8,9,10,17,18,19,20,21,22,29,30,31,32]:
-            if key == 16 or key == 15:
-                print(key)
-                print(coach[str(key)], len(coach[str(key)]))
-                print(user[key], len(user[key]))
+            # if key == 16 or key == 15:
+            #     continue
             if distance <= max_allowable_distance:
                 dtw_distances[key] = 0
                 dtw_list.append(0)
