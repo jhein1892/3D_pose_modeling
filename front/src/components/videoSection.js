@@ -48,8 +48,6 @@ export default function VideoSection({userType, setVideoTitle})
 
     }
 
-
-
     function generateOptions(){
         return options.map((vid) => {
             return (
@@ -60,6 +58,22 @@ export default function VideoSection({userType, setVideoTitle})
 
     function handleChange(event){
         console.log(event.target.value)
+        let vid_title = event.target.value
+        setPlayVideo(null)
+        if(vid_title != 'none'){            
+            setVideoTitle(prev => ({...prev, "Coach": vid_title}))
+            axios.get(`http://127.0.0.1:5000/getAnnotated?vid_title=${vid_title}`,{
+                responseType: 'arraybuffer'
+            })
+            .then((response) => {
+                const blob = new Blob([response.data], {type: "video/mp4"});
+                const videoUrl = URL.createObjectURL(blob);
+    
+                setPlayVideo(videoUrl);
+            })
+        } else {
+            console.log('show option to upload new video')
+        }
     }
 
     useEffect(() => {

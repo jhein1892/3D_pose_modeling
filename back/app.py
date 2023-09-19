@@ -27,7 +27,6 @@ CORS(app, origins=["http://localhost:3000"], methods=["GET", "POST", "PUT", "DEL
 @app.route('/getAvailableVideos')
 def hello():
     available_videos = os.listdir(app.config['DATA_FOLDER'])
-    print(available_videos)
     return make_response({"available_vids" : available_videos})
 
 @app.route('/compare_videos', methods=["POST"])
@@ -89,6 +88,13 @@ def process_video():
             return send_file(annotated_filepath, as_attachment=True)
         
     return jsonify({'error': 'No video file in request'}), 400
+
+@app.route('/getAnnotated', methods=['GET'])
+def getAnnotated():
+    title = request.args.get('vid_title')
+    annotated_filepath = os.path.join(app.config['ANNOTATED_FOLDER'], title)
+
+    return send_file(annotated_filepath, as_attachment=True)
 
 # This is doing the same as process_and_annotate_video except it doesn't annotate, just gets coords and returns dict of coords
 def get_coords(input):
