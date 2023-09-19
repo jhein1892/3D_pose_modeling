@@ -56,12 +56,11 @@ export default function VideoSection({userType, setVideoTitle})
                 <option>{vid}</option>
             )
         })
-
     }
 
     useEffect(() => {
         if(userType === 'Coach'){
-            axios.get("http://127.0.0.1:5000/")
+            axios.get("http://127.0.0.1:5000/getAvailableVideos")
             .then((response) => {
                 setOptions(response.data.available_vids)
             })

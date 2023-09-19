@@ -24,7 +24,7 @@ app.config['TEMP_FOLDER'] = TEMP_FOLDER
 
 CORS(app, origins=["http://localhost:3000"], methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"])
 
-@app.route('/')
+@app.route('/getAvailableVideos')
 def hello():
     available_videos = os.listdir(app.config['DATA_FOLDER'])
     print(available_videos)
