@@ -51,8 +51,6 @@ export default function VideoSection({userType, setVideoTitle})
 
 
     function generateOptions(){
-        console.log('here')
-        console.log(options)
         return options.map((vid) => {
             return (
                 <option>{vid}</option>
@@ -62,10 +60,15 @@ export default function VideoSection({userType, setVideoTitle})
     }
 
     useEffect(() => {
-        axios.get("http://127.0.0.1:5000/")
-        .then((response) => {
-            setOptions(response.data.available_vids)
-        })
+        if(userType === 'Coach'){
+            axios.get("http://127.0.0.1:5000/")
+            .then((response) => {
+                setOptions(response.data.available_vids)
+            })
+            .catch((error) => {
+                console.error("Error fetching available Videos", error)
+            })
+        }
     },[])
 
     return (
