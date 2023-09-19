@@ -18,10 +18,10 @@ export default function CompareVids({compAccuracy, dashArray})
     })
 
     return (
-        <div class="flex-wrapper">
-            <div class="single-chart">
+        <div className="flex-wrapper">
+            <div className="single-chart">
                 <svg viewBox="0 0 36 36" className={circleColors}>
-                <path class="circle-bg"
+                <path className="circle-bg"
                     d="M18 2.0845
                     a 15.9155 15.9155 0 0 1 0 31.831
                     a 15.9155 15.9155 0 0 1 0 -31.831"
@@ -33,9 +33,9 @@ export default function CompareVids({compAccuracy, dashArray})
                     a 15.9155 15.9155 0 0 1 0 -31.831"
                 />
                 {compAccuracy ?
-                    <text x="18" y="20.35" class="percentage">{compAccuracy}%</text>
+                    <text x="18" y="20.35" className="percentage">{compAccuracy}%</text>
                     :
-                    <text x="18" y="20.35" class="percentage">NA</text>
+                    <text x="18" y="20.35" className="percentage">NA</text>
                 }
                 </svg>
             </div>

@@ -35,7 +35,7 @@ export default function CompareScores({lmAccuracy})
                 'high_acc':lmAccuracy && lmAccuracy[score] > 0.8
             })
             return (
-                <div className="parts_col">
+                <div key={`${lmNames[score]}-comp-score`} className="parts_col">
                     <h4>{lmNames[score]}:</h4>
                     {lmAccuracy ? <span className={divClasses}>{(lmAccuracy[score] * 100).toFixed(2)}%</span>: <span>NA</span>}
                 </div>

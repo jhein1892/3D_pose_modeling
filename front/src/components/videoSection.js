@@ -53,9 +53,13 @@ export default function VideoSection({userType, setVideoTitle})
     function generateOptions(){
         return options.map((vid) => {
             return (
-                <option>{vid}</option>
+                <option key={`${vid}-selection-option`} value={vid}>{vid}</option>
             )
         })
+    }
+
+    function handleChange(event){
+        console.log(event.target.value)
     }
 
     useEffect(() => {
@@ -75,7 +79,8 @@ export default function VideoSection({userType, setVideoTitle})
             <div className="top_section">
                 <h1>Video Section: {userType}</h1>
                 {userType === 'Coach' ?
-                    <select>
+                    <select onChange={handleChange}>
+                        <option value='none' selected></option>
                         {generateOptions()}
                     </select>
                     :
