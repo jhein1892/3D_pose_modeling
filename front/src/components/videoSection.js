@@ -8,6 +8,7 @@ export default function VideoSection({userType, setVideoTitle})
     const [playVideo, setPlayVideo] = useState(null)
     const [options, setOptions] = useState([])
     const [newVid, setNewVid] = useState(true)
+    const [vidStartingPositions, setVidStartingPositions] = useState()
     // const [annotatedVideo, setAnnotatedVideo] = useState(null);
 
     const handleVideoChange = (event) => {
@@ -63,14 +64,17 @@ export default function VideoSection({userType, setVideoTitle})
         if(vid_title != 'none'){            
             setNewVid(false)
             setVideoTitle(prev => ({...prev, "Coach": vid_title}))
-            axios.get(`http://127.0.0.1:5000/getAnnotated?vid_title=${vid_title}`,{
-                responseType: 'arraybuffer'
-            })
-            .then((response) => {
-                const blob = new Blob([response.data], {type: "video/mp4"});
-                const videoUrl = URL.createObjectURL(blob);
-    
-                setPlayVideo(videoUrl);
+            const videoRequest = axios.get(`http://127.0.0.1:5000/getAnnotated?vid_title=${vid_title}`,{responseType: 'arraybuffer'})
+            const startRequest = axios.get(`http://127.0.0.1:5000/getStartingData?vid_title=${vid_title}`, {responseType: 'json'})
+
+            Promise.all([videoRequest, startRequest])
+            .then((responses) => {
+                const blob = new Blob([responses[0].data], {type: "video/mp4"})
+                const videoUrl = URL.createObjectURL(blob)
+                setPlayVideo(videoUrl)
+
+                const startingResponse = responses[1].data
+                setVidStartingPositions(startingResponse)
             })
         } else {
             setNewVid(true)

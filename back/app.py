@@ -16,10 +16,13 @@ UPLOAD_FOLDER  = 'uploads'
 ANNOTATED_FOLDER = 'annotated'
 DATA_FOLDER = 'data'
 TEMP_FOLDER = 'temp'
+START_FOLDER = 'start'
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 app.config['ANNOTATED_FOLDER'] = ANNOTATED_FOLDER
 app.config['DATA_FOLDER'] = DATA_FOLDER
 app.config['TEMP_FOLDER'] = TEMP_FOLDER
+app.config['START_FOLDER'] = START_FOLDER
+
 
 
 CORS(app, origins=["http://localhost:3000"], methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"])
@@ -74,13 +77,15 @@ def process_video():
             
             annotated_filepath = os.path.join(app.config['ANNOTATED_FOLDER'], filename)
             data_filepath = os.path.join(app.config['DATA_FOLDER'], filename)
+
+            starting_filepath = os.path.join(app.config['START_FOLDER'], filename)
             if os.path.exists(annotated_filepath):
                 print("Already exists")
 
             else:
                 print("New Video")
                 print("Before processing")
-                process_and_annotate_video(video_filepath, annotated_filepath, data_filepath)
+                process_and_annotate_video(video_filepath, annotated_filepath, data_filepath, starting_filepath)
                 print("Done processing")
 
             # Check if the annotated_filepath already exists or not
@@ -94,19 +99,16 @@ def getAnnotated():
     title = request.args.get('vid_title')
     # Gathers the Annotated video
     annotated_filepath = os.path.join(app.config['ANNOTATED_FOLDER'], title)
+    return send_file(annotated_filepath, as_attachment=True)
 
-    # I'm going to need to gather the data file content
-    data_filepath = os.path.join(app.config['DATA_FOLDER'], title)
-    with open(data_filepath, 'r') as openfile:
+@app.route('/getStartingData', methods=['GET'])
+def getStartingData():
+    title = request.args.get('vid_title')
+    starting_filepath = os.path.join(app.config['START_FOLDER'], title)
+    with open(starting_filepath, 'r') as openfile:
         coach_data = json.load(openfile)
     
-    data_keys = coach_data.keys()
-    starting_keys = dict()
-    for key in data_keys:
-        starting_keys[key] = coach_data[key][0]
-
-    print(starting_keys)
-    return send_file(annotated_filepath, as_attachment=True)
+    return coach_data
 
 # This is doing the same as process_and_annotate_video except it doesn't annotate, just gets coords and returns dict of coords
 def get_coords(input):
@@ -168,7 +170,7 @@ def get_coords(input):
     os.remove(video_path)
     return relMovement
 
-def process_and_annotate_video(input_filepath, output_filepath, data_filepath):
+def process_and_annotate_video(input_filepath, output_filepath, data_filepath, starting_filepath):
     cap = cv2.VideoCapture(input_filepath)
 
     if not cap.isOpened():
@@ -233,6 +235,10 @@ def process_and_annotate_video(input_filepath, output_filepath, data_filepath):
     json_object = json.dumps(relMovement, indent=4)
     with open(data_filepath, "w") as outfile:
         outfile.write(json_object)
+
+    start_object = json.dumps(startCoord, indent=4)
+    with open(starting_filepath, 'w') as outfile:
+        outfile.write(start_object)
 
     cap.release()
     out.release()
