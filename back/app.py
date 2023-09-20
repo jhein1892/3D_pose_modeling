@@ -92,8 +92,20 @@ def process_video():
 @app.route('/getAnnotated', methods=['GET'])
 def getAnnotated():
     title = request.args.get('vid_title')
+    # Gathers the Annotated video
     annotated_filepath = os.path.join(app.config['ANNOTATED_FOLDER'], title)
 
+    # I'm going to need to gather the data file content
+    data_filepath = os.path.join(app.config['DATA_FOLDER'], title)
+    with open(data_filepath, 'r') as openfile:
+        coach_data = json.load(openfile)
+    
+    data_keys = coach_data.keys()
+    starting_keys = dict()
+    for key in data_keys:
+        starting_keys[key] = coach_data[key][0]
+
+    print(starting_keys)
     return send_file(annotated_filepath, as_attachment=True)
 
 # This is doing the same as process_and_annotate_video except it doesn't annotate, just gets coords and returns dict of coords
