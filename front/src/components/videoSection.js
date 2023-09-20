@@ -7,6 +7,7 @@ export default function VideoSection({userType, setVideoTitle})
     const [selectedVideo, setSelectedVideo] = useState(null);
     const [playVideo, setPlayVideo] = useState(null)
     const [options, setOptions] = useState([])
+    const [newVid, setNewVid] = useState(true)
     // const [annotatedVideo, setAnnotatedVideo] = useState(null);
 
     const handleVideoChange = (event) => {
@@ -57,10 +58,10 @@ export default function VideoSection({userType, setVideoTitle})
     }
 
     function handleChange(event){
-        console.log(event.target.value)
         let vid_title = event.target.value
         setPlayVideo(null)
         if(vid_title != 'none'){            
+            setNewVid(false)
             setVideoTitle(prev => ({...prev, "Coach": vid_title}))
             axios.get(`http://127.0.0.1:5000/getAnnotated?vid_title=${vid_title}`,{
                 responseType: 'arraybuffer'
@@ -72,6 +73,7 @@ export default function VideoSection({userType, setVideoTitle})
                 setPlayVideo(videoUrl);
             })
         } else {
+            setNewVid(true)
             console.log('show option to upload new video')
         }
     }
@@ -93,10 +95,15 @@ export default function VideoSection({userType, setVideoTitle})
             <div className="top_section">
                 <h1>Video Section: {userType}</h1>
                 {userType === 'Coach' ?
-                    <select onChange={handleChange}>
-                        <option value='none' selected></option>
-                        {generateOptions()}
-                    </select>
+                    <>
+                        <select onChange={handleChange}>
+                            <option value='none' selected></option>
+                            {generateOptions()}
+                        </select>
+                        {newVid === true &&
+                            <input type="file" accept='video/' onClick={() => {setPlayVideo(null)}} onChange={handleVideoChange} />
+                        }
+                    </>
                     :
                     <input type="file" accept='video/' onClick={() => {setPlayVideo(null)}} onChange={handleVideoChange} />
                 }
