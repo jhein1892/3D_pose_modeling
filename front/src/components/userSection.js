@@ -48,7 +48,6 @@ export default function UserSection({setVideoTitle, vidStartingPositions})
             const circleColor = 'blue'
 
             function drawCircle(x,y){
-                console.log(x, y)
                 ctx.beginPath();
                 ctx.arc(x, y, circleRadius, 0, Math.PI * 2);
                 ctx.fillStyle = circleColor
@@ -58,8 +57,12 @@ export default function UserSection({setVideoTitle, vidStartingPositions})
     
             function drawCircles(){
                 for(let key of Object.keys(vidStartingPositions)) {
-                    
-                    drawCircle(vidStartingPositions[key][0], vidStartingPositions[key][1])
+                    let excludes_vals = [0,1,2,3,4,5,6,7,8,9,10,17,18,19,20,21,22,29,30,31,32]
+
+                    if (!excludes_vals.includes(parseInt(key))){
+                        drawCircle(vidStartingPositions[key][0], vidStartingPositions[key][1])
+                        
+                    }
                 }
             }
     
@@ -81,7 +84,7 @@ export default function UserSection({setVideoTitle, vidStartingPositions})
                         <source src={playVideo} type="video/mp4" />
                     </video>
                     :
-                    <canvas height={2080} width={1900} ref={canvasRef}></canvas>
+                    <canvas height={1920} width={1080} ref={canvasRef}></canvas>
                 }
             </div>
             {selectedVideo &&

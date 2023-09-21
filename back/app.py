@@ -275,6 +275,8 @@ def coord_comp(user, coach):
     user_keys = user.keys()
     dtw_list = list()
     dtw_distances = dict()
+
+    # Need to make this dynamic
     max_allowable_distance = (1080 * 1920) * 0.001
 
     # Current best is 0.001
