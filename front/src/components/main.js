@@ -12,6 +12,8 @@ export default function MainPage()
     const [compAccuracy, setCompAccuracy] = useState(null);
     const [lmAccuracy, setLmAccuracy] = useState();
     const [dashArray, setDashArray] = useState('0,100')
+    const [vidStartingPositions, setVidStartingPositions] = useState()
+
     
     function handleVideoCompare(){
         // Need to pass a video to the backend
@@ -31,16 +33,16 @@ export default function MainPage()
             setLmAccuracy(response.data.normalized)
         })
     }
-
+    
     return (
         <div className="main_wrapper">
             <div className="input_wrapper">    
-                <UserSection userType={"User"} setVideoTitle={setVideoTitle}/>
+                <UserSection setVideoTitle={setVideoTitle} vidStartingPositions={vidStartingPositions}/>
                 <div className="comp_section">
                     <CompareVids compAccuracy={compAccuracy} dashArray={dashArray}/>
                     <button onClick={handleVideoCompare}>Compare Vids</button>
                 </div>
-                <CoachSection setVideoTitle={setVideoTitle}/>
+                <CoachSection setVideoTitle={setVideoTitle} setVidStartingPositions={setVidStartingPositions}/>
             </div>
             <CompareScores lmAccuracy={lmAccuracy}/>
         </div>

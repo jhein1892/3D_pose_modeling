@@ -2,13 +2,13 @@ import React, {useState, useEffect} from 'react';
 import axios from 'axios';
 import "../styles/Video.sass"
 
-export default function CoachSection({setVideoTitle})
+export default function CoachSection({setVideoTitle, setVidStartingPositions})
 {
     const [selectedVideo, setSelectedVideo] = useState(null);
     const [playVideo, setPlayVideo] = useState(null)
     const [options, setOptions] = useState([])
     const [newVid, setNewVid] = useState(true)
-    const [vidStartingPositions, setVidStartingPositions] = useState()
+    // const [vidStartingPositions, setVidStartingPositions] = useState()
     // const [annotatedVideo, setAnnotatedVideo] = useState(null);
 
     const handleVideoChange = (event) => {
@@ -69,7 +69,6 @@ export default function CoachSection({setVideoTitle})
                 setPlayVideo(videoUrl)
 
                 const startingResponse = responses[1].data
-                console.log(startingResponse)
                 setVidStartingPositions(startingResponse)
             })
         } else {

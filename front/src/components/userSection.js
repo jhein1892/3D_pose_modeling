@@ -2,12 +2,11 @@ import React, {useState, useEffect} from 'react';
 import axios from 'axios';
 import "../styles/Video.sass"
 
-export default function UserSection({userType, setVideoTitle})
+export default function UserSection({setVideoTitle, vidStartingPositions})
 {
     const [selectedVideo, setSelectedVideo] = useState(null);
     const [playVideo, setPlayVideo] = useState(null)
-
-
+    
 
     const handleVideoChange = (event) => {
         const file = event.target.files[0];
@@ -40,10 +39,14 @@ export default function UserSection({userType, setVideoTitle})
 
     }
 
+    useEffect(() => {
+        console.log(vidStartingPositions)
+    },[vidStartingPositions])
+
     return (
         <div className="video_wrapper">
             <div className="top_section">
-                <h1>Video Section: {userType}</h1>
+                <h1>Video Section: User</h1>
                 <input type="file" accept='video/' onClick={() => {setPlayVideo(null)}} onChange={handleVideoChange} />
             </div>
             <div className="video_section">
