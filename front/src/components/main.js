@@ -1,7 +1,8 @@
 import React, {useEffect, useState} from "react"
 import axios from "axios"
 import "../styles/Main.sass"
-import VideoSection from "./videoSection"
+import CoachSection from "./coachSection"
+import UserSection from "./userSection"
 import CompareVids from "./compareVids"
 import CompareScores from "./compareScores"
 
@@ -34,12 +35,12 @@ export default function MainPage()
     return (
         <div className="main_wrapper">
             <div className="input_wrapper">    
-                <VideoSection userType={"User"} setVideoTitle={setVideoTitle}/>
+                <UserSection userType={"User"} setVideoTitle={setVideoTitle}/>
                 <div className="comp_section">
                     <CompareVids compAccuracy={compAccuracy} dashArray={dashArray}/>
                     <button onClick={handleVideoCompare}>Compare Vids</button>
                 </div>
-                <VideoSection userType={"Coach"} setVideoTitle={setVideoTitle}/>
+                <CoachSection setVideoTitle={setVideoTitle}/>
             </div>
             <CompareScores lmAccuracy={lmAccuracy}/>
         </div>

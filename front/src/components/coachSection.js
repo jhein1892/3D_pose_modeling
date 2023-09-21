@@ -2,7 +2,7 @@ import React, {useState, useEffect} from 'react';
 import axios from 'axios';
 import "../styles/Video.sass"
 
-export default function VideoSection({userType, setVideoTitle})
+export default function CoachSection({setVideoTitle})
 {
     const [selectedVideo, setSelectedVideo] = useState(null);
     const [playVideo, setPlayVideo] = useState(null)
@@ -16,12 +16,7 @@ export default function VideoSection({userType, setVideoTitle})
         if(!file){
             return
         } else {
-            if(userType === "Coach"){
-                setVideoTitle(prev => ({...prev, [userType]: file.name}));
-            }
-            else if (userType === "User"){
-                setVideoTitle(prev => ({...prev, [userType]: file}))
-            }
+            setVideoTitle(prev => ({...prev, 'Coach': file.name}));
             const videoURL = URL.createObjectURL(file)
             setSelectedVideo(file)
             setPlayVideo(videoURL)
@@ -74,6 +69,7 @@ export default function VideoSection({userType, setVideoTitle})
                 setPlayVideo(videoUrl)
 
                 const startingResponse = responses[1].data
+                console.log(startingResponse)
                 setVidStartingPositions(startingResponse)
             })
         } else {
@@ -83,32 +79,24 @@ export default function VideoSection({userType, setVideoTitle})
     }
 
     useEffect(() => {
-        if(userType === 'Coach'){
-            axios.get("http://127.0.0.1:5000/getAvailableVideos")
-            .then((response) => {
-                setOptions(response.data.available_vids)
-            })
-            .catch((error) => {
-                console.error("Error fetching available Videos", error)
-            })
-        }
+        axios.get("http://127.0.0.1:5000/getAvailableVideos")
+        .then((response) => {
+            setOptions(response.data.available_vids)
+        })
+        .catch((error) => {
+            console.error("Error fetching available Videos", error)
+        })
     },[])
 
     return (
         <div className="video_wrapper">
             <div className="top_section">
-                <h1>Video Section: {userType}</h1>
-                {userType === 'Coach' ?
-                    <>
-                        <select onChange={handleChange}>
-                            <option value='none' selected></option>
-                            {generateOptions()}
-                        </select>
-                        {newVid === true &&
-                            <input type="file" accept='video/' onClick={() => {setPlayVideo(null)}} onChange={handleVideoChange} />
-                        }
-                    </>
-                    :
+                <h1>Video Section: Coach</h1>
+                <select onChange={handleChange}>
+                    <option value='none' selected></option>
+                    {generateOptions()}
+                </select>
+                {newVid === true &&
                     <input type="file" accept='video/' onClick={() => {setPlayVideo(null)}} onChange={handleVideoChange} />
                 }
             </div>
