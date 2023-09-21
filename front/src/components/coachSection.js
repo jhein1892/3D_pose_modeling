@@ -92,8 +92,8 @@ export default function CoachSection({setVideoTitle})
         <div className="video_wrapper">
             <div className="top_section">
                 <h1>Video Section: Coach</h1>
-                <select onChange={handleChange}>
-                    <option value='none' selected></option>
+                <select defaultValue={'none'} onChange={handleChange}>
+                    <option value='none' ></option>
                     {generateOptions()}
                 </select>
                 {newVid === true &&

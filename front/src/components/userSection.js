@@ -30,11 +30,8 @@ export default function UserSection({userType, setVideoTitle})
             responseType: 'arraybuffer'
         })
         .then((response) => {
-            console.log(response.data)
             const blob = new Blob([response.data], { type: "video/mp4" });
-            console.log(response)
             const videoUrl = URL.createObjectURL(blob);
-
             setPlayVideo(videoUrl);
         })
         .catch((error) => {
@@ -42,40 +39,6 @@ export default function UserSection({userType, setVideoTitle})
         })
 
     }
-
-    // function generateOptions(){
-    //     return options.map((vid) => {
-    //         return (
-    //             <option key={`${vid}-selection-option`} value={vid}>{vid}</option>
-    //         )
-    //     })
-    // }
-
-    // function handleChange(event){
-    //     let vid_title = event.target.value
-    //     setPlayVideo(null)
-    //     if(vid_title != 'none'){            
-    //         setNewVid(false)
-    //         setVideoTitle(prev => ({...prev, "Coach": vid_title}))
-    //         const videoRequest = axios.get(`http://127.0.0.1:5000/getAnnotated?vid_title=${vid_title}`,{responseType: 'arraybuffer'})
-    //         const startRequest = axios.get(`http://127.0.0.1:5000/getStartingData?vid_title=${vid_title}`, {responseType: 'json'})
-
-    //         Promise.all([videoRequest, startRequest])
-    //         .then((responses) => {
-    //             const blob = new Blob([responses[0].data], {type: "video/mp4"})
-    //             const videoUrl = URL.createObjectURL(blob)
-    //             setPlayVideo(videoUrl)
-
-    //             const startingResponse = responses[1].data
-    //             console.log(startingResponse)
-    //             setVidStartingPositions(startingResponse)
-    //         })
-    //     } else {
-    //         setNewVid(true)
-    //         console.log('show option to upload new video')
-    //     }
-    // }
-
 
     return (
         <div className="video_wrapper">
