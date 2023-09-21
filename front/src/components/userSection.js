@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useRef} from 'react';
 import axios from 'axios';
 import "../styles/Video.sass"
 
@@ -6,6 +6,7 @@ export default function UserSection({setVideoTitle, vidStartingPositions})
 {
     const [selectedVideo, setSelectedVideo] = useState(null);
     const [playVideo, setPlayVideo] = useState(null)
+    const canvasRef = useRef(null)
     
 
     const handleVideoChange = (event) => {
@@ -40,7 +41,32 @@ export default function UserSection({setVideoTitle, vidStartingPositions})
     }
 
     useEffect(() => {
-        console.log(vidStartingPositions)
+        if(vidStartingPositions != undefined){
+            const canvas = canvasRef.current;
+            const ctx = canvas.getContext('2d')
+            const circleRadius = 5;
+            const circleColor = 'blue'
+
+            function drawCircle(x,y){
+                console.log(x, y)
+                ctx.beginPath();
+                ctx.arc(x, y, circleRadius, 0, Math.PI * 2);
+                ctx.fillStyle = circleColor
+                ctx.fill();
+                ctx.closePath();
+            }
+    
+            function drawCircles(){
+                for(let key of Object.keys(vidStartingPositions)) {
+                    
+                    drawCircle(vidStartingPositions[key][0], vidStartingPositions[key][1])
+                }
+            }
+    
+            ctx.clearRect(0,0,canvas.width, canvas.height);
+    
+            drawCircles();
+        }
     },[vidStartingPositions])
 
     return (
@@ -50,10 +76,12 @@ export default function UserSection({setVideoTitle, vidStartingPositions})
                 <input type="file" accept='video/' onClick={() => {setPlayVideo(null)}} onChange={handleVideoChange} />
             </div>
             <div className="video_section">
-                {playVideo && 
+                {playVideo ?
                     <video controls width='400' autoPlay loop muted>
                         <source src={playVideo} type="video/mp4" />
                     </video>
+                    :
+                    <canvas height={2080} width={1900} ref={canvasRef}></canvas>
                 }
             </div>
             {selectedVideo &&
