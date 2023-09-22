@@ -61,7 +61,7 @@ export default function UserSection({setVideoTitle, vidStartingPositions})
 
                     if (!excludes_vals.includes(parseInt(key))){
                         drawCircle(vidStartingPositions[key][0], vidStartingPositions[key][1])
-                        
+
                     }
                 }
             }
