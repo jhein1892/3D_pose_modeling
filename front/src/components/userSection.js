@@ -6,6 +6,7 @@ export default function UserSection({setVideoTitle, vidStartingPositions})
 {
     const [selectedVideo, setSelectedVideo] = useState(null);
     const [playVideo, setPlayVideo] = useState(null)
+    const [videoDimensions, setVideoDimensions] = useState(null)
     const canvasRef = useRef(null)
     
 
@@ -16,8 +17,27 @@ export default function UserSection({setVideoTitle, vidStartingPositions})
         } else {
             setVideoTitle(prev => ({...prev, 'User': file}))
             const videoURL = URL.createObjectURL(file)
-            setSelectedVideo(file)
             setPlayVideo(videoURL)
+            setSelectedVideo(file)
+
+            const fileReader = new FileReader();
+            fileReader.onload = () => {
+                const blob = new Blob([fileReader.result], {type: file.type});
+                const video = document.createElement('video');
+
+                video.addEventListener('loadedmetadata', () => {
+                    const dimensions = {
+                        width: video.videoWidth,
+                        height: video.videoHeight
+                    }
+                    console.log(dimensions)
+                    setVideoDimensions(dimensions);
+                    URL.revokeObjectURL(video)
+                })
+                video.src = URL.createObjectURL(blob);
+            }
+
+            fileReader.readAsArrayBuffer(file);
         }
     }
 
@@ -79,13 +99,12 @@ export default function UserSection({setVideoTitle, vidStartingPositions})
                 <input type="file" accept='video/' onClick={() => {setPlayVideo(null)}} onChange={handleVideoChange} />
             </div>
             <div className="video_section">
-                {playVideo ?
+                {playVideo &&
                     <video controls width='400' autoPlay loop muted>
                         <source src={playVideo} type="video/mp4" />
                     </video>
-                    :
-                    <canvas height={1920} width={1080} ref={canvasRef}></canvas>
                 }
+                <canvas height={videoDimensions.height} width={videoDimensions.width} ref={canvasRef}></canvas>
             </div>
             {selectedVideo &&
                 <button onClick={uploadVideo}>Upload Video</button>
